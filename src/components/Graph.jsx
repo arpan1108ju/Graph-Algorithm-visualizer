@@ -42,8 +42,8 @@ const Graph = () => {
     {
       selector: '.bubble',
       style: {
-        'width': 10,
-        'height': 10,
+        'width': 50,
+        'height': 50,
         'background-color': '#ff0000',
         'shape': 'ellipse',
         'overlay-opacity': 0
