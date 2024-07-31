@@ -5,16 +5,11 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-<<<<<<< HEAD:src/components/DropdownButton.jsx
 import { useState, useContext } from 'react';
-import edgeContext from '../assets/context/EdgeContext';
-
-=======
-import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import { IconButton } from '@mui/material';
->>>>>>> 7e73e669906aef4bda38d179b8e572e242ed5be5:src/components/DropdownButtonNode.jsx
+import edgeContext from '../assets/context/EdgeContext';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -114,43 +109,19 @@ export default function DropdownButtonNode() {
                 onClose={handleClose}
             >
                 <MenuItem  disableRipple>
-<<<<<<< HEAD:src/components/DropdownButton.jsx
-                    <label htmlFor="source" className=' w-16'>Source:</label>
-                    <input type="text" id='surce' className=' p-1 bg-gray-200 w-12' value={source} onChange={handleSourceChange}/>
-                </MenuItem>
-                <Divider sx={{ my: 0.5 }} />
-
-                <MenuItem  disableRipple>
-                    <label htmlFor="target" className=' w-16'>Target:</label>
-                    <input type="text" id='target' className=' p-1 bg-gray-200 w-12' value={target} onChange={handleTargetChange}/>
-                </MenuItem>
-
-                <Divider sx={{ my: 0.5 }} />
-
-                <MenuItem  disableRipple>
-                    <label htmlFor="weight" className=' w-16'>Weight:</label>
-                    <input type="number" id='weight' className=' p-1 bg-gray-200 w-12' onChange={handleWeightChange} value={weight}/>
-                </MenuItem>
-                
-                <div  className='flex justify-around'>
-                    <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>
-                    <Button variant='contained' color='success' onClick={handleSave}>Add</Button>
-                </div>
-                
-=======
                     <label htmlFor="source" className=' w-16'>Label:</label>
                     <input type="text" id='surce' className=' p-1 bg-gray-200' value={source} onChange={handleSourceChange}/>
                 </MenuItem> 
                 <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>
-                    <IconButton aria-label='cancel' color="error" size='small'>
+                    <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>
-                    <IconButton aria-label='cancel' color="success" size='small'>
+                    <IconButton aria-label='cancel' color="success" size='small' onClick={handleSave}>
                         <DoneIcon />
                     </IconButton>
+                   
                 </div>
->>>>>>> 7e73e669906aef4bda38d179b8e572e242ed5be5:src/components/DropdownButtonNode.jsx
             </StyledMenu>
         </div>
     );

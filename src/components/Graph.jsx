@@ -6,6 +6,7 @@ import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, 
 import { layout, stylesheet } from '../styles/cystyle';
 import DropdownButtonEdge from './DropdownButtonEdge';
 import DropdownButtonNode from './DropdownButtonNode';
+import edgeContext from '../assets/context/EdgeContext';
 
 const Graph = () => {
   const cyRef = useRef(null);
