@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
+import DropdownButton from './DropdownButton.jsx';
 
 const Graph = () => {
 
@@ -42,7 +43,6 @@ const Graph = () => {
         'control-point-distances': 50, // Control distances can be adjusted dynamically
         'control-point-weights': 0.5,
         'line-fill': 'solid',
-        'line-color': '#ccc'
       }
     },
     {
@@ -152,6 +152,7 @@ const Graph = () => {
       <Button onClick={onClick} variant='contained'>
          click 
       </Button>
+      <DropdownButton/>
       <CytoscapeComponent
         elements={elements}
         stylesheet={stylesheet}
