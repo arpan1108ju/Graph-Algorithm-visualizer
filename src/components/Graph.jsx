@@ -1,24 +1,25 @@
 import { Button } from '@mui/material';
-import React, { useCallback, useRef, useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { colorEdge,colorNode, colorEdgeArrow } from '../utils/formatColor';
 import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE, VISITING_COLOR_EDGE, VISITING_COLOR_NODE } from '../constants';
-import { layout, stylesheet } from '../styles/cystyle';
+
 import DropdownButtonEdge from './DropdownButtonEdge';
 import DropdownButtonNode from './DropdownButtonNode';
 import edgeContext from '../assets/context/EdgeContext';
 
 const Graph = () => {
-  const cyRef = useRef(null);
   const context = useContext(edgeContext);
-  const {edge} = context;
+  const {cy,setCy,elements,layout, stylesheet,toggleWeighted } = context;
 
-  const onCyReady = useCallback((cy) => {
-    console.log('ready');
-    cyRef.current = cy;
+  const onCyReady = useCallback((cyGot) => {
+    setCy(cyGot);
   }, []);
 
-  
+  useEffect(()=>{
+      console.log(`Changed : `,stylesheet);
+  },[stylesheet]);
+
 
   const animateFlowEdge = (edge, duration) => {
 
@@ -26,7 +27,7 @@ const Graph = () => {
         
         setTimeout(()=>{
             let step = 0;
-            const colors = [UNVISITED_COLOR_EDGE,VISITING_COLOR_EDGE,VISITED_COLOR_EDGE];
+            const colors = [UNVISITED_COLOR_EDGE,VISITED_COLOR_EDGE];
             const animationSteps = colors.length;
             const interval = setInterval(() => {
             if (step > animationSteps) {
@@ -56,9 +57,8 @@ const Graph = () => {
                 colors = [VISITED_COLOR_NODE];
             }
             else if(node.state === STATE.UNVISITED){
-               colors = [UNVISITED_COLOR_NODE,VISITING_COLOR_NODE,VISITED_COLOR_NODE];
+               colors = [UNVISITED_COLOR_NODE,VISITED_COLOR_NODE];
             }
-
             const animationSteps = colors.length;
             const interval = setInterval(() => {
             if (step > animationSteps) {
@@ -76,10 +76,12 @@ const Graph = () => {
 
 
   const onClick = async() => {
-    var cy = null;
-    cy = cyRef?.current;
+
+    toggleWeighted();
 
     if(!cy) return;
+
+// update the "json" object
 
     const nodeStart = cy.getElementById('a');
     const edge = cy.getElementById('ab');
@@ -106,7 +108,7 @@ const Graph = () => {
        </div>
 
       <CytoscapeComponent
-        elements={edge}
+        elements={elements}
         stylesheet={stylesheet}
         layout={layout}
         style={{
@@ -122,12 +124,3 @@ const Graph = () => {
 
 export default Graph;
 
-
-/*
-
-  colorNode(color,node)
-  colorEdge(color,edge)
-  
-
-
-*/

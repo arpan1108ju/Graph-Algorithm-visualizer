@@ -83,8 +83,8 @@ export default function DropdownButtonEdge() {
 
 
     const handleSave = ()=>{
-        const id = source + target;
-        addEdge(id, source, target);
+        const id = source + '-' + target;
+        addEdge(id, source, target,weight);
         handleClose();
     }
 
