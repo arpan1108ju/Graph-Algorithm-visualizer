@@ -4,8 +4,8 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import { colorEdge,colorNode, colorEdgeArrow } from '../utils/formatColor';
 import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE, VISITING_COLOR_EDGE, VISITING_COLOR_NODE } from '../constants';
 import { layout, stylesheet } from '../styles/cystyle';
-import DropdownButton from './DropdownButton';
-import edgeContext from '../assets/context/EdgeContext';
+import DropdownButtonEdge from './DropdownButtonEdge';
+import DropdownButtonNode from './DropdownButtonNode';
 
 const Graph = () => {
   const cyRef = useRef(null);
@@ -100,7 +100,8 @@ const Graph = () => {
         <Button onClick={onClick} variant='contained' className='bg-red-300'>
             Start Animation
         </Button>
-        <DropdownButton/>
+        <DropdownButtonNode />
+        <DropdownButtonEdge />
        </div>
 
       <CytoscapeComponent

@@ -14,6 +14,7 @@ export const stylesheet = [
     {
       selector: 'edge',
       style: {
+        'label' : 'data(id)',
         'width': 3,
         'line-color': '#ccc',
         'target-arrow-color': '#ccc',
