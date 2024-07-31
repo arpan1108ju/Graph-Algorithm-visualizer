@@ -5,7 +5,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import edgeContext from '../assets/context/EdgeContext';
 
 
 const StyledMenu = styled((props) => (
@@ -25,7 +26,7 @@ const StyledMenu = styled((props) => (
     '& .MuiPaper-root': {
         borderRadius: 6,
         marginTop: theme.spacing(1),
-        minWidth: 180,
+        minWidth: 120,
         color:
             theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
         boxShadow:
@@ -54,6 +55,8 @@ export default function DropdownButton() {
     const [weight, setWeight] = useState(0);
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
+    const context = useContext(edgeContext);
+    const {edge, addEdge} = context;
 
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -72,6 +75,12 @@ export default function DropdownButton() {
     }
     const handleTargetChange = (e)=>{
         setTarget(e.target.value);
+    }
+
+    const handleSave = ()=>{
+        const id = source + target;
+        addEdge(id, source, target);
+        handleClose();
     }
 
     return (
@@ -99,21 +108,26 @@ export default function DropdownButton() {
             >
                 <MenuItem  disableRipple>
                     <label htmlFor="source" className=' w-16'>Source:</label>
-                    <input type="text" id='surce' className=' p-1 bg-gray-200' value={source} onChange={handleSourceChange}/>
+                    <input type="text" id='surce' className=' p-1 bg-gray-200 w-12' value={source} onChange={handleSourceChange}/>
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
 
                 <MenuItem  disableRipple>
                     <label htmlFor="target" className=' w-16'>Target:</label>
-                    <input type="text" id='target' className=' p-1 bg-gray-200' value={target} onChange={handleTargetChange}/>
+                    <input type="text" id='target' className=' p-1 bg-gray-200 w-12' value={target} onChange={handleTargetChange}/>
                 </MenuItem>
 
                 <Divider sx={{ my: 0.5 }} />
 
                 <MenuItem  disableRipple>
                     <label htmlFor="weight" className=' w-16'>Weight:</label>
-                    <input type="number" id='weight' className=' p-1 bg-gray-200' onChange={handleWeightChange} value={weight}/>
+                    <input type="number" id='weight' className=' p-1 bg-gray-200 w-12' onChange={handleWeightChange} value={weight}/>
                 </MenuItem>
+                
+                <div  className='flex justify-around'>
+                    <Button variant='contained' color='error' onClick={handleClose}>Cancel</Button>
+                    <Button variant='contained' color='success' onClick={handleSave}>Add</Button>
+                </div>
                 
             </StyledMenu>
         </div>

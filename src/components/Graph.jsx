@@ -1,29 +1,23 @@
 import { Button } from '@mui/material';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useContext } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { colorEdge,colorNode, colorEdgeArrow } from '../utils/formatColor';
 import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE, VISITING_COLOR_EDGE, VISITING_COLOR_NODE } from '../constants';
 import { layout, stylesheet } from '../styles/cystyle';
+import DropdownButton from './DropdownButton';
+import edgeContext from '../assets/context/EdgeContext';
 
 const Graph = () => {
   const cyRef = useRef(null);
+  const context = useContext(edgeContext);
+  const {edge} = context;
 
   const onCyReady = useCallback((cy) => {
     console.log('ready');
     cyRef.current = cy;
   }, []);
 
-  const elements = [
-    { data: { id: 'a' }, position: { x: 100, y: 100 } },
-    { data: { id: 'b' }, position: { x: 200, y: 200 } },
-    { data: { id: 'c' }, position: { x: 300, y: 150 } },
-    { data: { id: 'd' }, position: { x: 400, y: 100 } },
-    { data: { id: 'e' }, position: { x: 500, y: 200 } },
-    { data: { id: 'ab', source: 'a', target: 'b' } },
-    { data: { id: 'bc', source: 'b', target: 'c' } },
-    { data: { id: 'cd', source: 'c', target: 'd' } },
-    { data: { id: 'de', source: 'd', target: 'e' } }
-  ];
+  
 
   const animateFlowEdge = (edge, duration) => {
 
@@ -102,14 +96,15 @@ const Graph = () => {
   return (
     <div className="h-screen ">
 
-       <div className='flex flex-col justify-between items-center bg-amber-400 py-4'>
+       <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
         <Button onClick={onClick} variant='contained' className='bg-red-300'>
             Start Animation
         </Button>
+        <DropdownButton/>
        </div>
 
       <CytoscapeComponent
-        elements={elements}
+        elements={edge}
         stylesheet={stylesheet}
         layout={layout}
         style={{
