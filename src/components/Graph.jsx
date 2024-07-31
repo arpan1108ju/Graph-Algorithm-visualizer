@@ -1,16 +1,17 @@
 import { Button } from '@mui/material';
 import React, { useCallback, useContext, useEffect } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { colorEdge,colorNode, colorEdgeArrow } from '../utils/formatColor';
-import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE, VISITING_COLOR_EDGE, VISITING_COLOR_NODE } from '../constants';
+import { animateFlowNode, animateFlowEdge } from '../utils/formatColor';
+import { layout, STATE} from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
 import DropdownButtonNode from './DropdownButtonNode';
-import edgeContext from '../assets/context/EdgeContext';
+import canvasContext from '../assets/context/CanvasContext';
 
 const Graph = () => {
-  const context = useContext(edgeContext);
-  const {cy,setCy,elements,layout, stylesheet,toggleWeighted } = context;
+  const context = useContext(canvasContext);
+  const {cy,setCy,elements, stylesheet,toggleWeighted } = context;
+  
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
@@ -19,60 +20,6 @@ const Graph = () => {
   useEffect(()=>{
       console.log(`Changed : `,stylesheet);
   },[stylesheet]);
-
-
-  const animateFlowEdge = (edge, duration) => {
-
-    return new Promise(resolve => {
-        
-        setTimeout(()=>{
-            let step = 0;
-            const colors = [UNVISITED_COLOR_EDGE,VISITED_COLOR_EDGE];
-            const animationSteps = colors.length;
-            const interval = setInterval(() => {
-            if (step > animationSteps) {
-                clearInterval(interval);
-                return;
-            }
-            colorEdge(edge,colors[step]);
-            colorEdgeArrow(edge,colors[step]);
-        
-              step++;
-            }, duration / animationSteps);
-            resolve();
-        },duration);
-
-    })
-
-  };
-
-
-  const animateFlowNode = (node,duration) => {
-
-    return new Promise(resolve => {
-        setTimeout(()=>{
-            let step = 0;
-            var colors;
-            if(node.state === STATE.VISITED){
-                colors = [VISITED_COLOR_NODE];
-            }
-            else if(node.state === STATE.UNVISITED){
-               colors = [UNVISITED_COLOR_NODE,VISITED_COLOR_NODE];
-            }
-            const animationSteps = colors.length;
-            const interval = setInterval(() => {
-            if (step > animationSteps) {
-                clearInterval(interval);
-                return;
-            }
-            colorNode(node,colors[step]);
-            step++;
-            }, duration / animationSteps);
-            resolve();
-    },duration);
-  })
-
-}
 
 
   const onClick = async() => {

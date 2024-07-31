@@ -1,5 +1,4 @@
-
-
+import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
 
 export const colorNode = (cyNode,color) => {
     cyNode.style({ 'background-color': color});
@@ -13,50 +12,62 @@ export const colorEdgeArrow = (cyEdge,color) => {
     cyEdge.style({'target-arrow-color': color});
 }
 
-export const getGradientColor = (t,startColorHex, midColorHex, endColorHex) => {
-      
-    const hexToRgbArray = (hex) => {
-        hex = hex.replace('#', '');
-        return [
-          parseInt(hex.slice(0, 2), 16),
-          parseInt(hex.slice(2, 4), 16),
-          parseInt(hex.slice(4, 6), 16)
-        ];
-    };
-  
-    const rgbArrayToHex = (rgbArray) => {
-        const hex = rgbArray.map((color) => {
-          const hexComponent = color.toString(16).padStart(2, '0');
-          return hexComponent;
-        });
-        return `#${hex.join('')}`;
-    };
-  
-    const interpolate = (a, b, c, t) => {
-        if (t <= 0.5) {
-        return parseInt(a + (b - a) * (t * 2),10);
-        } else {
-        return parseInt(b + (c - b) * ((t - 0.5) * 2),10);
-        }
-    };
 
-    // Convert hex color strings to RGB values
-    const startColorRGB = hexToRgbArray(startColorHex);
-    const midColorRGB = hexToRgbArray(midColorHex);
-    const endColorRGB = hexToRgbArray(endColorHex);
+export  const animateFlowEdge = (edge, duration) => {
 
-    console.log(`st : ${startColorRGB} ${midColorRGB} ${endColorRGB}`);
-  
-    // Interpolate RGB values based on t
-    const r = interpolate(startColorRGB[0], midColorRGB[0], endColorRGB[0], t);
-    const g = interpolate(startColorRGB[1], midColorRGB[1], endColorRGB[1], t);
-    const b = interpolate(startColorRGB[2], midColorRGB[2], endColorRGB[2], t);
-    
-    console.log(`Got ${r} ${g} ${b}`);
-    // Convert RGB values back to hex color string
-    const hexColor = rgbArrayToHex([r, g, b]);
-    console.log(`return hex is ${hexColor}`);
-    return hexColor;
+    return new Promise(resolve => {
+        
+        setTimeout(()=>{
+            let step = 0;
+            const colors = [UNVISITED_COLOR_EDGE,VISITED_COLOR_EDGE];
+            const animationSteps = colors.length;
+            const interval = setInterval(() => {
+            if (step > animationSteps) {
+                clearInterval(interval);
+                return;
+            }
+            colorEdge(edge,colors[step]);
+            colorEdgeArrow(edge,colors[step]);
+        
+              step++;
+            }, duration / animationSteps);
+            resolve();
+        },duration);
+
+    })
+
   };
 
-  
+
+export const animateFlowNode = (node,duration) => {
+
+    return new Promise(resolve => {
+        setTimeout(()=>{
+            let step = 0;
+            var colors;
+            if(node.state === STATE.VISITED){
+                colors = [VISITED_COLOR_NODE];
+            }
+            else if(node.state === STATE.UNVISITED){
+               colors = [UNVISITED_COLOR_NODE,VISITED_COLOR_NODE];
+            }
+            const animationSteps = colors.length;
+            const interval = setInterval(() => {
+            if (step > animationSteps) {
+                clearInterval(interval);
+                return;
+            }
+            colorNode(node,colors[step]);
+            step++;
+            }, duration / animationSteps);
+            resolve();
+    },duration);
+    })
+
+}
+
+export const generateRandomPosition = () => {
+    const x = Math.floor(Math.random() * 500);
+    const y = Math.floor(Math.random() * 300);
+    return { x, y };
+ }  

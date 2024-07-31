@@ -9,7 +9,7 @@ import { useState, useContext } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import { IconButton } from '@mui/material';
-import edgeContext from '../assets/context/EdgeContext';
+import canvasContext from '../assets/context/CanvasContext';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -55,7 +55,7 @@ const StyledMenu = styled((props) => (
 export default function DropdownButtonNode() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [nodeValue, setNodeValue] = useState("");
-    const context = useContext(edgeContext);
+    const context = useContext(canvasContext);
     const {node, addNode} = context;
 
     const open = Boolean(anchorEl);
