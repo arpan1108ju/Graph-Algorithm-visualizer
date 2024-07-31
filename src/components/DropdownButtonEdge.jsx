@@ -60,7 +60,7 @@ export default function DropdownButtonEdge() {
     const [target, setTarget] = useState("");
 
     const context = useContext(edgeContext);
-    const {edge, addEdge} = context;
+    const {addEdge} = context;
 
     const open = Boolean(anchorEl);
     const handleClick = (event) => {

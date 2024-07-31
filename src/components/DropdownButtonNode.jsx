@@ -54,11 +54,9 @@ const StyledMenu = styled((props) => (
 
 export default function DropdownButtonNode() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [weight, setWeight] = useState(0);
-    const [source, setSource] = useState("");
-    const [target, setTarget] = useState("");
+    const [nodeValue, setNodeValue] = useState("");
     const context = useContext(edgeContext);
-    const {edge, addEdge} = context;
+    const {node, addNode} = context;
 
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -66,22 +64,16 @@ export default function DropdownButtonNode() {
     };
     const handleClose = () => {
         setAnchorEl(null);
-        console.log("weight: ",weight," source: ",source," target: ",target);
     };
 
-    const handleWeightChange = (e)=>{
-        setWeight(e.target.value);
+  
+    const handleNodeValueChange = (e)=>{
+        setNodeValue(e.target.value);
     }
-    const handleSourceChange = (e)=>{
-        setSource(e.target.value);
-    }
-    const handleTargetChange = (e)=>{
-        setTarget(e.target.value);
-    }
-
+    
     const handleSave = ()=>{
-        const id = source + target;
-        addEdge(id, source, target);
+        const id = nodeValue;
+        addNode(id);
         handleClose();
     }
 
@@ -109,8 +101,8 @@ export default function DropdownButtonNode() {
                 onClose={handleClose}
             >
                 <MenuItem  disableRipple>
-                    <label htmlFor="source" className=' w-16'>Label:</label>
-                    <input type="text" id='surce' className=' p-1 bg-gray-200' value={source} onChange={handleSourceChange}/>
+                    <label htmlFor="node-value" className=' w-16'>Label:</label>
+                    <input type="text" id='surce' className=' p-1 bg-gray-200' value={nodeValue} onChange={handleNodeValueChange}/>
                 </MenuItem> 
                 <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>

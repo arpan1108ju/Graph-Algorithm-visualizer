@@ -17,12 +17,25 @@ export default function EdgeState(props) {
     const [edge, setEdge] = useState(elements);
 
     const addEdge = (id, source, target)=>{
-      const newEdge = { data: { id: id, source: source, target: target
-        } };
+      const newEdge = { data: { id: id, source: source, target: target} };
         setEdge([...edge, newEdge]);
     }
+
+    function generateRandomPosition() {
+       const x = Math.floor(Math.random() * 500);
+       const y = Math.floor(Math.random() * 300);
+       return { x, y };
+    }
+
+    const addNode = (id) => {
+      const {x , y} = generateRandomPosition();
+      const newNode = { data : { id: id, position : { x : x, y : y}}};
+      console.log('new node', newNode);
+      setEdge([...edge,newNode]);
+    }
+
   return (
-    <edgeContext.Provider value={{edge, addEdge}}>
+    <edgeContext.Provider value={{ addEdge , addNode}}>
         {props.children}
     </edgeContext.Provider>
   )
