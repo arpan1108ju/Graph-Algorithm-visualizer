@@ -112,23 +112,23 @@ export default function DropdownButtonEdge() {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem  disableRipple>
-                    <label htmlFor="source" className=' w-16'>Source:</label>
-                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200' value={source} onChange={handleSourceChange}/>
-                </MenuItem>
+                <div className=' p-1' >
+                    <label htmlFor="source" className='mr-2'>Source:</label>
+                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200 rounded-lg' value={source} onChange={handleSourceChange}/>
+                </div>
                 <Divider sx={{ my: 0.5 }} />
 
-                <MenuItem  disableRipple>
-                    <label htmlFor="target" className=' w-16'>Target:</label>
-                    <input type="text" id='target' className='w-16 p-1 bg-gray-200' value={target} onChange={handleTargetChange}/>
-                </MenuItem>
+                <div className=' p-1'>
+                    <label htmlFor="target" className='mr-3'>Target:</label>
+                    <input type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
+                </div>
 
                 <Divider sx={{ my: 0.5 }} />
 
-                <MenuItem  disableRipple>
-                    <label htmlFor="weight" className=' w-16'>Weight:</label>
-                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200' onChange={handleWeightChange} value={weight}/>
-                </MenuItem>
+                <div className=' p-1'>
+                    <label htmlFor="weight" className=' mr-2'>Weight:</label>
+                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
+                </div>
 
                 <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>

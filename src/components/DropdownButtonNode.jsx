@@ -100,10 +100,10 @@ export default function DropdownButtonNode() {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem  disableRipple>
-                    <label htmlFor="node-value" className=' w-16'>Label:</label>
-                    <input type="text" id='surce' className=' p-1 bg-gray-200' value={nodeValue} onChange={handleNodeValueChange}/>
-                </MenuItem> 
+                <div  className='p-1'>
+                    <label htmlFor="node-value" className=' w-16 mr-2'>Label:</label>
+                    <input type="text" id='surce' className=' p-1 bg-gray-200 rounded-lg w-16' value={nodeValue} onChange={handleNodeValueChange}/>
+                </div> 
                 <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>
                     <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
