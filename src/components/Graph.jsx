@@ -1,45 +1,41 @@
 import { Button } from '@mui/material';
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useTransition } from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { animateFlowNode, animateFlowEdge } from '../utils/formatColor';
-import { layout, STATE} from '../constants';
+import { layout} from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
 import DropdownButtonNode from './DropdownButtonNode';
 import canvasContext from '../assets/context/CanvasContext';
+import { dfs } from '../algorithms/dfs';
+
 
 const Graph = () => {
   const context = useContext(canvasContext);
-  const {cy,setCy,elements, stylesheet,toggleWeighted } = context;
+  const {cy,setCy,elements, stylesheet,toggleWeighted,createGraph,graph
+    ,isDirected,isWeighted
+   } = context;
   
+  const [isPending,startTransition] = useTransition(); 
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
   }, []);
 
   useEffect(()=>{
-      console.log(`Changed : `,stylesheet);
+    
   },[stylesheet]);
 
 
-  const onClick = async() => {
-
-    toggleWeighted();
-
+  const onClick = () => {
     if(!cy) return;
+    
+    
+    startTransition(()=> {
 
-// update the "json" object
-
-    const nodeStart = cy.getElementById('a');
-    const edge = cy.getElementById('ab');
-    const nodeEnd = cy.getElementById('b');
-
-    nodeStart.state = STATE.UNVISITED;
-    nodeEnd.state = STATE.UNVISITED;
-
-    await animateFlowNode(nodeStart, 1000);
-    await animateFlowEdge(edge, 1000);
-    await animateFlowNode(nodeEnd, 1000);
+      createGraph((updatedGraph) => {
+        dfs(cy,updatedGraph,'d',isDirected,isWeighted);
+      })
+    })
      
   };
 
@@ -47,7 +43,7 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
-        <Button onClick={onClick} variant='contained' className='bg-red-300'>
+        <Button onClick={onClick} variant='contained' className='bg-red-300' disabled={isPending}>
             Start Animation
         </Button>
         <DropdownButtonNode />

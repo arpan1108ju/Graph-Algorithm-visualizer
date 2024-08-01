@@ -6,8 +6,6 @@ import { generateRandomPosition } from '../../utils/formatColor';
 
 export default function CanvasState(props) {
     
-    
-
     const [cy,setCy] = useState(null);
     const [stylesheet, setStylesheet] = useState(initalStylesheet);
 
@@ -15,13 +13,42 @@ export default function CanvasState(props) {
     const [isDirected, setIsDirected] = useState(false);
     const [isWeighted, setIsWeighted] = useState(false);
 
+    const [graph,setGraph] = useState({});
+
+
+    const createGraph = (callback) => {
+          var graphObj = {};
+          elements.map((element) => {
+            // element is node
+            if(element.position){
+                graphObj[element.data.id] = [];
+            }
+            // element is edge
+            else if(element.data.source){
+              graphObj[element.data.source].push([element.data.target,element.data.weight]);
+              if(!isDirected){
+                graphObj[element.data.target].push([element.data.source,element.data.weight]);
+              }
+            }
+            return element;
+          })
+    
+        // console.log('local ',graphObj);
+        setGraph((g) => graphObj);
+        
+        if(callback){
+          callback(graphObj);        
+        }
+
+  }
+
+
     const addEdge = (id, source, target,weight)=>{
       const newEdge = { data: { id: id, source: source, target: target , weight : weight} };
         setElements([...elements, newEdge]);
     }
 
     
-
 
     const addNode = (id) => {
       const {x , y} = generateRandomPosition();
@@ -63,7 +90,7 @@ export default function CanvasState(props) {
 
 
   return (
-    <canvasContext.Provider value={{cy,setCy,toggleWeighted,stylesheet,toggleDirected, isDirected,isWeighted,elements ,addEdge , addNode}}>
+    <canvasContext.Provider value={{createGraph,graph,cy,setCy,toggleWeighted,stylesheet,toggleDirected, isDirected,isWeighted,elements ,addEdge , addNode}}>
         {props.children}
     </canvasContext.Provider>
   )
