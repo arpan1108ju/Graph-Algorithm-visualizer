@@ -68,6 +68,8 @@ export default function DropdownButtonNode() {
 
   
     const handleNodeValueChange = (e)=>{
+        e.preventDefault();
+        if(!e.target.value) return;
         setNodeValue(e.target.value);
     }
     

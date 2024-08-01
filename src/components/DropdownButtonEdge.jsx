@@ -2,7 +2,7 @@ import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,6 +10,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { IconButton } from '@mui/material';
 import { useState, useContext } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
+import { formEdgeId } from '../utils/formatColor';
 
 
 const StyledMenu = styled((props) => (
@@ -37,7 +38,7 @@ const StyledMenu = styled((props) => (
         '& .MuiMenu-list': {
             padding: '4px 0',
         },
-        '& .MuiMenuItem-root': {
+        '& .Muidiv-root': {
             '& .MuiSvgIcon-root': {
                 fontSize: 18,
                 color: theme.palette.text.secondary,
@@ -72,18 +73,24 @@ export default function DropdownButtonEdge() {
     };
 
     const handleWeightChange = (e)=>{
+        e.preventDefault();
+        if(e.target.value == null) return;
         setWeight(e.target.value);
     }
     const handleSourceChange = (e)=>{
+        e.preventDefault();
+        if(e.target.value == null) return;
         setSource(e.target.value);
     }
     const handleTargetChange = (e)=>{
+        e.preventDefault();
+        if(e.target.value == null) return;
         setTarget(e.target.value);
     }
 
 
     const handleSave = ()=>{
-        const id = source + '-' + target;
+        const id = formEdgeId(source,target);
         addEdge(id, source, target,weight);
         handleClose();
     }
@@ -112,22 +119,22 @@ export default function DropdownButtonEdge() {
                 open={open}
                 onClose={handleClose}
             >
-                <div className=' p-1' >
-                    <label htmlFor="source" className='mr-2'>Source:</label>
-                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200 rounded-lg' value={source} onChange={handleSourceChange}/>
+                <div >
+                    <label htmlFor="source" className=' w-16'>Source:</label>
+                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200' value={source} onChange={handleSourceChange}/>
                 </div>
                 <Divider sx={{ my: 0.5 }} />
 
-                <div className=' p-1'>
-                    <label htmlFor="target" className='mr-3'>Target:</label>
-                    <input type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
+                <div >
+                    <label htmlFor="target" className=' w-16'>Target:</label>
+                    <input type="text" id='target' className='w-16 p-1 bg-gray-200' value={target} onChange={handleTargetChange}/>
                 </div>
 
                 <Divider sx={{ my: 0.5 }} />
 
-                <div className=' p-1'>
-                    <label htmlFor="weight" className=' mr-2'>Weight:</label>
-                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
+                <div >
+                    <label htmlFor="weight" className=' w-16'>Weight:</label>
+                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200' onChange={handleWeightChange} value={weight}/>
                 </div>
 
                 <Divider sx={{ my: 0.5 }} />

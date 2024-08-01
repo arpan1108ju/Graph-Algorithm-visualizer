@@ -12,62 +12,59 @@ export const colorEdgeArrow = (cyEdge,color) => {
     cyEdge.style({'target-arrow-color': color});
 }
 
+export const animateNode = (cy,nodeId,state,duration) => {
 
-export  const animateFlowEdge = (edge, duration) => {
+    const nodeUi = cy.getElementById(nodeId);
 
-    return new Promise(resolve => {
-        
-        setTimeout(()=>{
-            let step = 0;
-            const colors = [UNVISITED_COLOR_EDGE,VISITED_COLOR_EDGE];
-            const animationSteps = colors.length;
-            const interval = setInterval(() => {
-            if (step > animationSteps) {
-                clearInterval(interval);
-                return;
-            }
-            colorEdge(edge,colors[step]);
-            colorEdgeArrow(edge,colors[step]);
-        
-              step++;
-            }, duration / animationSteps);
-            resolve();
-        },duration);
-
-    })
-
-  };
-
-
-export const animateFlowNode = (node,duration) => {
+    if(!nodeUi) return;
 
     return new Promise(resolve => {
         setTimeout(()=>{
-            let step = 0;
-            var colors;
-            if(node.state === STATE.VISITED){
-                colors = [VISITED_COLOR_NODE];
+            var color;
+            if(state === STATE.VISITED){
+                color = VISITED_COLOR_NODE;
             }
-            else if(node.state === STATE.UNVISITED){
-               colors = [UNVISITED_COLOR_NODE,VISITED_COLOR_NODE];
+            else if(state === STATE.UNVISITED){
+                color = UNVISITED_COLOR_NODE;
             }
-            const animationSteps = colors.length;
-            const interval = setInterval(() => {
-            if (step > animationSteps) {
-                clearInterval(interval);
-                return;
-            }
-            colorNode(node,colors[step]);
-            step++;
-            }, duration / animationSteps);
+            colorNode(nodeUi,color);
             resolve();
     },duration);
     })
-
 }
 
+export const animateEdge = (cy,sourceId,targetId,state,duration,isDirected) => {
+
+    var edgeUi = cy.getElementById(formEdgeId(sourceId,targetId));
+    if(!isDirected && !edgeUi.length){
+        edgeUi = cy.getElementById(formEdgeId(targetId,sourceId));
+    }    
+
+    if(!edgeUi.length) return;
+
+    return new Promise(resolve => {
+        setTimeout(()=>{
+            var color;
+            if(state === STATE.VISITED){
+                color = VISITED_COLOR_EDGE;
+            }
+            else if(state === STATE.UNVISITED){
+                color = UNVISITED_COLOR_EDGE;
+            }
+            colorEdge(edgeUi,color);
+            if(isDirected) colorEdgeArrow(edgeUi,color);
+            resolve();
+    },duration);
+    })
+}
+
+
 export const generateRandomPosition = () => {
-    const x = Math.floor(Math.random() * 500);
-    const y = Math.floor(Math.random() * 300);
+    const x = parseInt(Math.floor(Math.random() * 500),10);
+    const y = parseInt(Math.floor(Math.random() * 300),10);
     return { x, y };
  }  
+
+export function formEdgeId(source,target){
+    return source + "-" + target; 
+}
