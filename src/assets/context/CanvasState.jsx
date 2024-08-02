@@ -50,10 +50,7 @@ export default function CanvasState(props) {
           return;
           }
       })
-      if(found){
-        setStartNode(node);
-        console.log('start node changed', startNode);
-      }
+      return found;
   }
 
   const addEdge = (id, source, target, weight) => {
@@ -103,7 +100,11 @@ export default function CanvasState(props) {
 
 
   const changeStartNode = (node) => {
-    
+    const check = checkNodeExistence(node);
+    if(check) setStartNode(node);
+    else{
+
+    }
   }
 
 

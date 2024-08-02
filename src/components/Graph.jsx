@@ -16,7 +16,7 @@ import Switch from '@mui/material/Switch';
 
 const Graph = () => {
   const context = useContext(canvasContext);
-  const {cy,setCy,elements, stylesheet,toggleWeighted,toggleDirected,createGraph,graph
+  const {startNode, cy,setCy,elements, stylesheet,toggleWeighted,toggleDirected,createGraph,graph
     ,isDirected,isWeighted
    } = context;
   
@@ -41,9 +41,9 @@ const Graph = () => {
     
     
     startTransition(()=> {
-
+      console.log("ispending: ",isPending);
       createGraph((updatedGraph) => {
-        dfs(cy,updatedGraph,'d',isDirected,isWeighted);
+        dfs(cy,updatedGraph,startNode,isDirected,isWeighted);
       })
     })
      
