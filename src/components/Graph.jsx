@@ -44,14 +44,14 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
-        <Run />
-        <Reset />
+        <DropdownButtonNode />
+        <DropdownButtonEdge />
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
-        <DropdownButtonNode />
         <SelectAlgo/>
         <SelectStartNode />
-        <DropdownButtonEdge />
+        <Run />
+        <Reset />
        </div>
 
       <CytoscapeComponent
