@@ -72,7 +72,7 @@ export default function CanvasState(props) {
     //  setIsDirected(!isDirected);
     const newStyleSheet = stylesheet.map((sheet) => {
       if (sheet.selector === 'edge') {
-        sheet.style.label = newWeighted ? `data(weight)` : '';
+        sheet.style.label = newWeighted ? data(weight) : '';
       }
       return sheet;
     });
@@ -114,4 +114,3 @@ export default function CanvasState(props) {
     </canvasContext.Provider>
   )
 }
-
