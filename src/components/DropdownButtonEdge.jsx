@@ -69,20 +69,20 @@ export default function DropdownButtonEdge() {
     };
     const handleClose = () => {
         setAnchorEl(null);
-        console.log("weight: ",weight," source: ",source," target: ",target);
+        // console.log("weight: ",weight," source: ",source," target: ",target);
     };
 
     const handleWeightChange = (e)=>{
         e.preventDefault();
-        // if(e.target.value == null) return;
+        if(e.target.value == null) return;
         setWeight(e.target.value);
     }
     const handleSourceChange = (e)=>{
         e.preventDefault();
         const val = e.target.value;
-        console.log("val: ",val);
+        console.log("val: ",e);
         
-        // if(e.target.value == null) return;
+        if(e.target.value == null) return;
         setSource(val);
     }
     const handleTargetChange = (e)=>{
@@ -90,7 +90,7 @@ export default function DropdownButtonEdge() {
         const val = e.target.value;
         console.log("val: ",val);
 
-        // if(e.target.value == null) return;
+        if(e.target.value == null) return;
         setTarget(val);
     }
 
@@ -126,8 +126,8 @@ export default function DropdownButtonEdge() {
                 onClose={handleClose}
             >
                 <div className='p-1'>
-                    <label htmlFor="source" className=' w-16 mr-1'>{isDirected?'From:':'First:'}</label>
-                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200 rounded-lg' value={source} onChange={handleSourceChange}/>
+                    <label className=' w-16 mr-1'>{isDirected ? "From:" : "First:"}</label>
+                    <input type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={source} onChange={handleSourceChange}/>
                 </div>
                 <Divider sx={{ my: 0.5 }} />
                 

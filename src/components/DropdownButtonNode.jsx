@@ -2,13 +2,12 @@ import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState, useContext } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
-import { IconButton } from '@mui/material';
+import { IconButton, MenuItem } from '@mui/material';
 import canvasContext from '../assets/context/CanvasContext';
 
 const StyledMenu = styled((props) => (
@@ -79,6 +78,8 @@ export default function DropdownButtonNode() {
         handleClose();
     }
 
+    const bro = document.getElementsByClassName('node-div');
+
     return (
         <div>
             <Button
@@ -102,11 +103,13 @@ export default function DropdownButtonNode() {
                 open={open}
                 onClose={handleClose}
             >
-                <div  className='p-1'>
+                
+                <div className='p-1 node-div'>
                     <label htmlFor="node-value" className=' w-16 mr-2'>Label:</label>
                     <input type="text" id='node-value' className=' p-1 bg-gray-200 rounded-lg w-16' value={nodeValue} onChange={handleNodeValueChange}/>
                 </div> 
                 <Divider sx={{ my: 0.5 }} />
+
                 <div className='flex flex-row justify-around items-center'>
                     <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
                         <CloseIcon />
