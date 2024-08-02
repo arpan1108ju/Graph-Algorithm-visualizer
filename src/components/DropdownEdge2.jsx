@@ -2,16 +2,15 @@ import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-
+import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useState, useContext } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import { IconButton } from '@mui/material';
-import { useState, useContext } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
 import { formEdgeId } from '../utils/formatColor';
-
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -38,7 +37,7 @@ const StyledMenu = styled((props) => (
         '& .MuiMenu-list': {
             padding: '4px 0',
         },
-        '& .Muidiv-root': {
+        '& .MuiMenuItem-root': {
             '& .MuiSvgIcon-root': {
                 fontSize: 18,
                 color: theme.palette.text.secondary,
@@ -54,11 +53,11 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function DropdownButtonEdge() {
+export default function DropdownButtonEdge2() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [weight, setWeight] = useState(0);
-    const [source, setSource] = useState("");
-    const [target, setTarget] = useState("");
+    const [source, setSource] = useState('');
+    const [target, setTarget] = useState('');
 
     const context = useContext(canvasContext);
     const {addEdge, isWeighted, isDirected} = context;
@@ -69,41 +68,31 @@ export default function DropdownButtonEdge() {
     };
     const handleClose = () => {
         setAnchorEl(null);
-        console.log("weight: ",weight," source: ",source," target: ",target);
     };
 
+
+    const handleSourceChange = (e)=>{
+        setSource(e.target.value);
+    }
+
+    const handleTargetChange = (e)=>{
+        e.preventdefault();
+        setTarget(e.target.value);
+    }
+
     const handleWeightChange = (e)=>{
-        e.preventDefault();
-        // if(e.target.value == null) return;
+        e.preventdefault();
         setWeight(e.target.value);
     }
-    const handleSourceChange = (e)=>{
-        e.preventDefault();
-        const val = e.target.value;
-        console.log("val: ",val);
-        
-        // if(e.target.value == null) return;
-        setSource(val);
-    }
-    const handleTargetChange = (e)=>{
-        e.preventDefault();
-        const val = e.target.value;
-        console.log("val: ",val);
-
-        // if(e.target.value == null) return;
-        setTarget(val);
-    }
-
-
+    
     const handleSave = ()=>{
         const id = formEdgeId(source,target);
         addEdge(id, source, target,weight);
         handleClose();
     }
 
-
     return (
-        <div className='px-4'>
+        <div>
             <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -125,25 +114,17 @@ export default function DropdownButtonEdge() {
                 open={open}
                 onClose={handleClose}
             >
-                <div className='p-1'>
-                    <label htmlFor="source" className=' w-16 mr-1'>{isDirected?'From:':'First:'}</label>
-                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200 rounded-lg' value={source} onChange={handleSourceChange}/>
+                <div  className='p-1'>
+                    <label htmlFor="source" className=' w-16 mr-2'>Source:</label>
+                    <input type="text" id='source' className=' p-1 bg-gray-200 rounded-lg w-16' value={source} onChange={handleSourceChange}/>
                 </div>
-                <Divider sx={{ my: 0.5 }} />
                 
-                <div className='p-1'>
-                    <label htmlFor="target" className=' w-16 mr-2'>{isDirected?'To:':'Second:'}</label>
-                    <input type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
-                </div>
-
                 <Divider sx={{ my: 0.5 }} />
-
-                {isWeighted === true && <div className='p-1'>
-                    <label htmlFor="weight" className=' w-16 mr-1'>Weight:</label>
-                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
+                {isWeighted && <div  className='p-1'>
+                    <label htmlFor="weight" className=' w-16 mr-2'>Weight:</label>
+                    <input type="number" id='weight' className=' p-1 bg-gray-200 rounded-lg w-16' value={weight} onChange={handleWeightChange}/>
                 </div>}
 
-                <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>
                     <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
                         <CloseIcon />
@@ -153,7 +134,6 @@ export default function DropdownButtonEdge() {
                     </IconButton>
                    
                 </div>
-
             </StyledMenu>
         </div>
     );

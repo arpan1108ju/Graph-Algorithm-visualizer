@@ -4,6 +4,8 @@ import CytoscapeComponent from 'react-cytoscapejs';
 import { layout} from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
+import DropdownButtonEdge2 from './DropdownEdge2';
+
 import DropdownButtonNode from './DropdownButtonNode';
 import canvasContext from '../assets/context/CanvasContext';
 import { dfs } from '../algorithms/dfs';
@@ -45,7 +47,8 @@ const Graph = () => {
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
         <DropdownButtonNode />
-        <DropdownButtonEdge />
+        {/* <DropdownButtonEdge /> */}
+        <DropdownButtonEdge2/>
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <SelectAlgo/>
