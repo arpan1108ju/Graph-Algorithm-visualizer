@@ -75,6 +75,7 @@ export default function SelectAlgo() {
         console.log("label: ", label);
         setAlgo(label);
         setButtonText(label);
+        handleClose();
     }
 
 

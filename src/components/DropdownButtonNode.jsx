@@ -76,6 +76,7 @@ export default function DropdownButtonNode() {
         const id = nodeValue;
         addNode(id);
         handleClose();
+        setNodeValue('');
     }
 
     const bro = document.getElementsByClassName('node-div');

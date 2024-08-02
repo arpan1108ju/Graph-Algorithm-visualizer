@@ -99,6 +99,8 @@ export default function DropdownButtonEdge() {
         const id = formEdgeId(source,target);
         addEdge(id, source, target,weight);
         handleClose();
+        setSource('');
+        setTarget('');
     }
 
 
