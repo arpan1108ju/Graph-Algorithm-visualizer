@@ -67,6 +67,7 @@ export default function SelectStartNode() {
     };
     
     const handleChangeInputNode = (e)=>{
+        e.preventDefault();
         setInputNode(e.target.value);
     }
     const handleSave = ()=>{

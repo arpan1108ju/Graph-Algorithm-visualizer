@@ -3,6 +3,7 @@ import canvasContext from './CanvasContext'
 import { useState } from 'react'
 import { GRAPH_ALGORITHM, initalStylesheet, initialElements } from '../../constants';
 import { generateRandomPosition } from '../../utils/formatColor';
+import { toast } from 'react-toastify';
 
 export default function CanvasState(props) {
 
@@ -45,19 +46,19 @@ export default function CanvasState(props) {
   }
 
   const checkNodeExistence = (node)=>{
-    let found = false;
-      elements.map((e)=>{
+      elements.forEach((e)=>{
         if(e.data.id === node){
           found = true;
           return ;
           }
       })
-      return found;
+      return false;
   }
 
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
-    setElements([...elements, newEdge]);
+    if (checkNodeExistence(source) && checkNodeExistence(target)) setElements([...elements, newEdge]);
+    else toast.error("Node does not exist!");
   }
 
   const addNode = (id) => {
@@ -105,7 +106,7 @@ export default function CanvasState(props) {
     const check = checkNodeExistence(node);
     if(check) setStartNode(node);
     else{
-
+        toast.error("Node does not exist!")
     }
   }
 

@@ -74,17 +74,17 @@ export default function DropdownButtonEdge() {
 
     const handleWeightChange = (e)=>{
         e.preventDefault();
-        if(e.target.value == null) return;
+        // if(e.target.value == null) return;
         setWeight(e.target.value);
     }
     const handleSourceChange = (e)=>{
         e.preventDefault();
-        if(e.target.value == null) return;
+        // if(e.target.value == null) return;
         setSource(e.target.value);
     }
     const handleTargetChange = (e)=>{
         e.preventDefault();
-        if(e.target.value == null) return;
+        // if(e.target.value == null) return;
         setTarget(e.target.value);
     }
 
