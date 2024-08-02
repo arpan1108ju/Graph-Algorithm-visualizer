@@ -1,7 +1,7 @@
-import React, { useSyncExternalStore } from 'react'
+import React, {  useTransition } from 'react'
 import canvasContext from './CanvasContext'
 import { useState } from 'react'
-import { initalStylesheet, initialElements } from '../../constants';
+import { GRAPH_ALGORITHM, initalStylesheet, initialElements } from '../../constants';
 import { generateRandomPosition } from '../../utils/formatColor';
 import { toast } from 'react-toastify';
 
@@ -9,11 +9,13 @@ export default function CanvasState(props) {
 
   const [cy, setCy] = useState(null);
   const [stylesheet, setStylesheet] = useState(initalStylesheet);
-  const [algo, setAlgo] = useState('dfs');
+  const [algo, setAlgo] = useState(GRAPH_ALGORITHM.DEFAULT);
   const [elements, setElements] = useState(initialElements);
   const [isDirected, setIsDirected] = useState(false);
   const [isWeighted, setIsWeighted] = useState(false);
   const [startNode, setStartNode] = useState(elements.length > 0? elements[0].data.id:'');
+
+  const [isPending,startTransition] = useTransition();
 
   const [graph, setGraph] = useState({});
 
@@ -44,10 +46,11 @@ export default function CanvasState(props) {
   }
 
   const checkNodeExistence = (node)=>{
-      let found = false;
+    var found = false;
       elements.forEach((e)=>{
-        if(e.data.id === node.toLowerCase()){
-           found = true;
+        if(e.data.id === node){
+          found = true;
+          return ;
           }
       })
       return found;
@@ -114,7 +117,7 @@ export default function CanvasState(props) {
 
 
   return (
-    <canvasContext.Provider value={{ startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
+    <canvasContext.Provider value={{isPending,startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
       {props.children}
     </canvasContext.Provider>
   )

@@ -13,6 +13,8 @@ import SelectAlgo from './SelectAlgo';
 import SelectStartNode from './SelectStartNode';
 
 import Switch from '@mui/material/Switch';
+import Run from './Run';
+import Reset from './Reset';
 
 const Graph = () => {
   const context = useContext(canvasContext);
@@ -20,40 +22,21 @@ const Graph = () => {
     ,isDirected,isWeighted
    } = context;
   
-  const [isPending,startTransition] = useTransition(); 
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
-
-    
 
   }, []);
 
   useEffect(()=>{
     
-     
-
   },[stylesheet]);
 
-
-  const onClick = () => {
-    if(!cy) return;
-    
-    
-    startTransition(()=> {
-      console.log("ispending: ",isPending);
-      createGraph((updatedGraph) => {
-        dfs(cy,updatedGraph,startNode,isDirected,isWeighted);
-      })
-    })
-     
-  };
 
   const handleChangeDierectedness = ()=>{
     toggleDirected();
   }
   const handleChangeWeightedness = ()=>{
-    console.log("isWeighted prev: ",isWeighted);
     toggleWeighted();
   }
 
@@ -61,15 +44,14 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
-        <Button onClick={onClick} variant='contained' className='bg-red-300' disabled={isPending}>
-            Start Animation
-        </Button>
+        <DropdownButtonNode />
+        <DropdownButtonEdge />
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
-        <DropdownButtonNode />
         <SelectAlgo/>
         <SelectStartNode />
-        <DropdownButtonEdge />
+        <Run />
+        <Reset />
        </div>
 
       <CytoscapeComponent
