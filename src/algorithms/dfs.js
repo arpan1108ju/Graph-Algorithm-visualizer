@@ -9,7 +9,7 @@ export const dfs = async(cy, graph, startNode,isDirected,isWeighted) =>{
       const { node,parentNode, weight } = stack.pop();
   
       if (!visited.has(node)) {
-        visited.add(node);
+        visited.add(node); 
 
         // console.log(`here : node ${node} , parent ${parentNode}`);
         
