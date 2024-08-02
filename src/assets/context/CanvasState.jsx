@@ -33,7 +33,6 @@ export default function CanvasState(props) {
             return element;
           })
     
-        // console.log('local ',graphObj);
         setGraph((g) => graphObj);
         
         if(callback){
@@ -86,7 +85,7 @@ export default function CanvasState(props) {
     
      cy?.style().clear().fromJson(stylesheet).update();
    }
-
+   
 
 
   return (
