@@ -64,8 +64,8 @@ const Graph = () => {
         <Button onClick={onClick} variant='contained' className='bg-red-300' disabled={isPending}>
             Start Animation
         </Button>
-        <div><Switch defaultChecked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
-        <div><Switch defaultChecked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
+        <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
+        <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <DropdownButtonNode />
         <SelectAlgo/>
         <SelectStartNode/>
