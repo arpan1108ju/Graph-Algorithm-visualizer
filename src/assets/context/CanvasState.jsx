@@ -103,7 +103,7 @@ export default function CanvasState(props) {
     const check = checkNodeExistence(node);
     if(check) setStartNode(node);
     else{
-      
+
     }
   }
 

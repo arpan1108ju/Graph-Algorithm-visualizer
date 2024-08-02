@@ -24,10 +24,15 @@ const Graph = () => {
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
+
+    
+
   }, []);
 
   useEffect(()=>{
     
+     
+
   },[stylesheet]);
 
 
@@ -77,6 +82,7 @@ const Graph = () => {
          backgroundColor : '#9da1f3ba'
         }}
         cy={onCyReady}
+        wheelSensitivity={0.05}
       />
     </div>
   );
