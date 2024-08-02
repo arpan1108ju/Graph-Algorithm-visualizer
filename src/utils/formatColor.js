@@ -1,4 +1,4 @@
-import { STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
+import { INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
 
 export const colorNode = (cyNode,color) => {
     cyNode.style({ 'background-color': color});
@@ -55,6 +55,24 @@ export const animateEdge = (cy,sourceId,targetId,state,duration,isDirected) => {
             if(isDirected) colorEdgeArrow(edgeUi,color);
             resolve();
     },duration);
+    })
+}
+
+export const ResetColor = (cy,elements) => {
+    elements.forEach((element) => {
+        // element is node
+        if (element.position) {
+          colorNode(cy.getElementById(element.data.id),INITIAL_COLOR_NODE);
+        }
+        // element is edge
+        else if (element.data.source) {
+            var edgeUi = cy.getElementById(formEdgeId(element.data.source,element.data.target));
+            if(!edgeUi.length){
+                edgeUi = cy.getElementById(formEdgeId(element.data.target,element.data.source));
+            }  
+            colorEdge(edgeUi,INITIAL_COLOR_EDGE);
+            colorEdgeArrow(edgeUi,INITIAL_COLOR_EDGE); 
+        }
     })
 }
 

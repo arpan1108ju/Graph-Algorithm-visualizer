@@ -45,7 +45,7 @@ export const initalStylesheet = [
   {
     selector: 'node',
     style: {
-      'background-color': '#666',
+      'background-color': INITIAL_COLOR_NODE,
       'label': 'data(id)',
       'text-valign': 'center',
       'color': '#fff',
@@ -59,8 +59,8 @@ export const initalStylesheet = [
     style: {
       'label' : '',
       'width': 3,
-      'line-color': '#ccc',
-      'target-arrow-color': '#ccc',
+      'line-color': INITIAL_COLOR_EDGE,
+      'target-arrow-color': INITIAL_COLOR_EDGE,
       'target-arrow-shape': '',
       'curve-style': 'unbundled-bezier',
       'control-point-distances': 50, // Control distances can be adjusted dynamically

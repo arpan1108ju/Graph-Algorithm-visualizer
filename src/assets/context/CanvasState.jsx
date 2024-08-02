@@ -46,13 +46,14 @@ export default function CanvasState(props) {
   }
 
   const checkNodeExistence = (node)=>{
+    var found = false;
       elements.forEach((e)=>{
         if(e.data.id === node){
           found = true;
           return ;
           }
       })
-      return false;
+      return found;
   }
 
   const addEdge = (id, source, target, weight) => {
@@ -75,7 +76,7 @@ export default function CanvasState(props) {
     //  setIsDirected(!isDirected);
     const newStyleSheet = stylesheet.map((sheet) => {
       if (sheet.selector === 'edge') {
-        sheet.style.label = newWeighted ? data(weight) : '';
+        sheet.style.label = newWeighted ? 'data(weight)' : '';
       }
       return sheet;
     });

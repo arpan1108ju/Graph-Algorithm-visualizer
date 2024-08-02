@@ -71,7 +71,7 @@ export default function SelectAlgo() {
         if(algo === label) return;
         console.log("label: ", label);
         setAlgo(label);
-        setButtonText(GRAPH_ALGORITHM[label]);
+        setButtonText(label);
     }
 
 
@@ -113,9 +113,9 @@ export default function SelectAlgo() {
                                             key={key}
                                             control={<Radio />} 
                                             label={GRAPH_ALGORITHM[key]}
-                                            onClick={(e) => handleSelectAlgo(e,key)}
+                                            onClick={(e) => handleSelectAlgo(e,GRAPH_ALGORITHM[key])}
                                             className=''
-                                            checked = {algo === key}
+                                            checked = {algo === GRAPH_ALGORITHM[key]}
                                         />
                                     )
                                 }

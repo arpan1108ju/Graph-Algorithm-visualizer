@@ -14,6 +14,7 @@ import SelectStartNode from './SelectStartNode';
 
 import Switch from '@mui/material/Switch';
 import Run from './Run';
+import Reset from './Reset';
 
 const Graph = () => {
   const context = useContext(canvasContext);
@@ -25,29 +26,17 @@ const Graph = () => {
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
 
-    
-
   }, []);
 
   useEffect(()=>{
     
-     
-
   },[stylesheet]);
 
-
-  const onClick = () => {
-    if(!cy) return;
-      createGraph((updatedGraph) => {
-        dfs(cy,updatedGraph,startNode,isDirected,isWeighted);
-      })
-  };
 
   const handleChangeDierectedness = ()=>{
     toggleDirected();
   }
   const handleChangeWeightedness = ()=>{
-    console.log("isWeighted prev: ",isWeighted);
     toggleWeighted();
   }
 
@@ -56,9 +45,7 @@ const Graph = () => {
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
         <Run />
-        <Button onClick={onClick} variant='contained' className='bg-red-300'>
-            Start Animation
-        </Button>
+        <Reset />
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <DropdownButtonNode />
