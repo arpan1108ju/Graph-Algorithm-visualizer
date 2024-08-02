@@ -17,6 +17,9 @@ import SelectStartNode from './SelectStartNode';
 import Switch from '@mui/material/Switch';
 import Run from './Run';
 import Reset from './Reset';
+import Draw from './Draw';
+
+import DistanceVisualizer from './DistanceVisualizer';
 
 const Graph = () => {
   const context = useContext(canvasContext);
@@ -47,15 +50,19 @@ const Graph = () => {
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
         <DropdownButtonNode />
-        {/* <DropdownButtonEdge /> */}
-        <DropdownButtonEdge2/>
+        <DropdownButtonEdge />
+        {/* <DropdownButtonEdge2/> */}
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <SelectAlgo/>
         <SelectStartNode />
         <Run />
+        <Draw/>
         <Reset />
        </div>
+        <div>
+          <DistanceVisualizer />
+        </div>
 
       <CytoscapeComponent
         elements={elements}

@@ -19,7 +19,7 @@ const Reset = () => {
   return (
       <div className='px-4'>
       <Button onClick={onClick} variant='contained'>
-        <span>Reset</span>
+        <span>Reset Graph</span>
       </Button>
     </div>
   )

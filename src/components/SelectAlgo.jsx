@@ -72,11 +72,12 @@ export default function SelectAlgo() {
         console.log("label: ", label);
         setAlgo(label);
         setButtonText(label);
+        handleClose();
     }
 
 
     return (
-        <div className='px-4 '>
+        <div className='p-4 '>
             <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -114,7 +115,7 @@ export default function SelectAlgo() {
                                             control={<Radio />} 
                                             label={GRAPH_ALGORITHM[key]}
                                             onClick={(e) => handleSelectAlgo(e,GRAPH_ALGORITHM[key])}
-                                            className=''
+                                            className=' px-1'
                                             checked = {algo === GRAPH_ALGORITHM[key]}
                                         />
                                     )

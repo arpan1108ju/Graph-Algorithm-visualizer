@@ -115,9 +115,12 @@ export default function CanvasState(props) {
     }
   }
 
+  const clearGraph = ()=>{
+    setElements([]);
+  }
 
   return (
-    <canvasContext.Provider value={{isPending,startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
+    <canvasContext.Provider value={{clearGraph, isPending,startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
       {props.children}
     </canvasContext.Provider>
   )

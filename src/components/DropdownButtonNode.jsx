@@ -77,6 +77,7 @@ export default function DropdownButtonNode() {
         const id = nodeValue;
         addNode(id);
         handleClose();
+        setNodeValue('');
     }
 
     return (
