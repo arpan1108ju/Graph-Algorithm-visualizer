@@ -12,10 +12,9 @@ export default function CanvasState(props) {
   const [elements, setElements] = useState(initialElements);
   const [isDirected, setIsDirected] = useState(false);
   const [isWeighted, setIsWeighted] = useState(false);
-  const [startNode, setStartNode] = useState('');
+  const [startNode, setStartNode] = useState(elements.length > 0? elements[0].data.id:'');
 
   const [graph, setGraph] = useState({});
-
 
   const createGraph = (callback) => {
     var graphObj = {};
@@ -43,6 +42,16 @@ export default function CanvasState(props) {
 
   }
 
+  const checkNodeExistence = (node)=>{
+    let found = false;
+      elements.map((e)=>{
+        if(e.data.id === node){
+          found = true;
+          return;
+          }
+      })
+      return found;
+  }
 
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
@@ -88,9 +97,14 @@ export default function CanvasState(props) {
     cy?.style().clear().fromJson(stylesheet).update();
   }
 
+
+
   const changeStartNode = (node) => {
-      setStartNode(node);
-      console.log('start node changed', startNode);
+    const check = checkNodeExistence(node);
+    if(check) setStartNode(node);
+    else{
+      
+    }
   }
 
 

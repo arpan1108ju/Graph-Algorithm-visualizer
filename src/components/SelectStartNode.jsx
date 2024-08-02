@@ -7,8 +7,9 @@ import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState, useContext } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
-import Checkbox from '@mui/material/Checkbox';
-
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -51,14 +52,11 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function SelectAlgo() {
+export default function SelectStartNode() {
     const [anchorEl, setAnchorEl] = useState(null);
     const context = useContext(canvasContext);
-    const {algo, setAlgo} = context;
-    const dfs = 'dfs';
-    const bfs = 'bfs';
-    const dijkstra = 'dijkstra';
-    const bellmanford = 'bellmanford';
+    const {startNode, changeStartNode} = context;
+    const [inputNode, setInputNode] = useState('');
 
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -67,11 +65,14 @@ export default function SelectAlgo() {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleSelectAlgo = (label)=>{
+    
+    const handleChangeInputNode = (e)=>{
+        setInputNode(e.target.value);
+    }
+    const handleSave = ()=>{
         handleClose();
-        console.log("label: ", label);
-        setAlgo(label);
+        console.log("label: ", inputNode);
+        changeStartNode(inputNode);
     }
 
 
@@ -87,7 +88,7 @@ export default function SelectAlgo() {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
             >
-                Select Algorithm
+                Select Start Node
             </Button>
             <StyledMenu
                 id="demo-customized-menu"
@@ -98,13 +99,20 @@ export default function SelectAlgo() {
                 open={open}
                 onClose={handleClose}
             >
-                <div><Checkbox onClick={()=>handleSelectAlgo(dfs)}/>DFS</div>
+                <div  className='p-1'>
+                    <label htmlFor="node-value" className=' w-16 mr-2'>Label:</label>
+                    <input type="text" id='surce' className=' p-1 bg-gray-200 rounded-lg w-16' value={inputNode} onChange={handleChangeInputNode}/>
+                </div> 
                 <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(bfs)}/>BFS</div>
-                <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(dijkstra)}/>Dijkstras</div>
-                <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(bellmanford)}/>Bellmanford</div>
+                <div className='flex flex-row justify-around items-center'>
+                <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
+                    <IconButton aria-label='cancel' color="success" size='small' onClick={handleSave}>
+                        <DoneIcon />
+                    </IconButton>
+                   
+                </div>
             </StyledMenu>
         </div>
     );
