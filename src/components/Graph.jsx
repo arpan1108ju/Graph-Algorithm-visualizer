@@ -13,6 +13,7 @@ import SelectAlgo from './SelectAlgo';
 import SelectStartNode from './SelectStartNode';
 
 import Switch from '@mui/material/Switch';
+import Run from './Run';
 
 const Graph = () => {
   const context = useContext(canvasContext);
@@ -20,7 +21,6 @@ const Graph = () => {
     ,isDirected,isWeighted
    } = context;
   
-  const [isPending,startTransition] = useTransition(); 
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
@@ -38,15 +38,9 @@ const Graph = () => {
 
   const onClick = () => {
     if(!cy) return;
-    
-    
-    startTransition(()=> {
-      console.log("ispending: ",isPending);
       createGraph((updatedGraph) => {
         dfs(cy,updatedGraph,startNode,isDirected,isWeighted);
       })
-    })
-     
   };
 
   const handleChangeDierectedness = ()=>{
@@ -61,7 +55,8 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
-        <Button onClick={onClick} variant='contained' className='bg-red-300' disabled={isPending}>
+        <Run />
+        <Button onClick={onClick} variant='contained' className='bg-red-300'>
             Start Animation
         </Button>
         <div><Switch defaultChecked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>

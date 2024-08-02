@@ -9,10 +9,25 @@ export const INITIAL_COLOR_NODE = '#666666';
 
 export var ANIMATION_TIME_MS = 300;
 
-export const STATE = {
+export const STATE =  Object.freeze({
     VISITED : 1,
     UNVISITED : 0
-}
+})
+
+export const GRAPH_ALGORITHM = Object.freeze({
+  DEFAULT : "NO ALGO",
+  DEPTH_FIRST_SEARCH: "DFS",
+  BREADTH_FIRST_SEARCH: "BFS",
+  DIJKSTRA: "DIJKSTRA",
+  BELLMAN_FORD: "BELLMAN FORD",
+  A_STAR: "A STAR",
+  FLOYD_WARSHALL: "FLOYD WARSHALL",
+  KRUSKAL: "KRUSKAL",
+  PRIM: "PRIM",
+  TOPOLOGICAL_SORT: "TOPOLOGICAL SORT",
+  TARJAN: "TARJAN",
+  KOSARAJU: "KOSARAJU"
+});
 
 export const initialElements = [
     { data: { id: 'a' }, position: { x: 100, y: 100 } },

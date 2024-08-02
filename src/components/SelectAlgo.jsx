@@ -3,11 +3,11 @@ import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 
-import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState, useContext } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
-import Checkbox from '@mui/material/Checkbox';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { GRAPH_ALGORITHM } from '../constants';
 
 
 const StyledMenu = styled((props) => (
@@ -54,12 +54,10 @@ const StyledMenu = styled((props) => (
 export default function SelectAlgo() {
     const [anchorEl, setAnchorEl] = useState(null);
     const context = useContext(canvasContext);
-    const {algo, setAlgo} = context;
-    const dfs = 'dfs';
-    const bfs = 'bfs';
-    const dijkstra = 'dijkstra';
-    const bellmanford = 'bellmanford';
+    const { algo,setAlgo } = context;
 
+    const [buttonText,setButtonText] = useState('Select Algorithm');
+    
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -68,15 +66,17 @@ export default function SelectAlgo() {
         setAnchorEl(null);
     };
 
-    const handleSelectAlgo = (label)=>{
-        handleClose();
+    const handleSelectAlgo = (e,label)=>{
+        e.preventDefault();
+        if(algo === label) return;
         console.log("label: ", label);
         setAlgo(label);
+        setButtonText(GRAPH_ALGORITHM[label]);
     }
 
 
     return (
-        <div className='px-4'>
+        <div className='px-4 '>
             <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -87,7 +87,7 @@ export default function SelectAlgo() {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
             >
-                Select Algorithm
+                {buttonText}
             </Button>
             <StyledMenu
                 id="demo-customized-menu"
@@ -98,14 +98,35 @@ export default function SelectAlgo() {
                 open={open}
                 onClose={handleClose}
             >
-                <div><Checkbox onClick={()=>handleSelectAlgo(dfs)}/>DFS</div>
-                <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(bfs)}/>BFS</div>
-                <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(dijkstra)}/>Dijkstras</div>
-                <Divider sx={{ my: 0.5 }} />
-                <div><Checkbox onClick={()=>handleSelectAlgo(bellmanford)}/>Bellmanford</div>
-            </StyledMenu>
+            <FormControl>
+                    <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        defaultValue="female"
+                        name="radio-buttons-group"
+                        className=''
+                    >
+                        {
+                            Object.keys(GRAPH_ALGORITHM).map(key => {
+                                if(GRAPH_ALGORITHM[key] !== GRAPH_ALGORITHM.DEFAULT){
+                                    return (
+                                        <FormControlLabel 
+                                            key={key}
+                                            control={<Radio />} 
+                                            label={GRAPH_ALGORITHM[key]}
+                                            onClick={(e) => handleSelectAlgo(e,key)}
+                                            className=''
+                                            checked = {algo === key}
+                                        />
+                                    )
+                                }
+                            })
+                        }
+
+                    </RadioGroup>
+            </FormControl>
+    </StyledMenu>
+
+
         </div>
     );
 }
