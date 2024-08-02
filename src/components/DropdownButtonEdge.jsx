@@ -79,13 +79,19 @@ export default function DropdownButtonEdge() {
     }
     const handleSourceChange = (e)=>{
         e.preventDefault();
+        const val = e.target.value;
+        console.log("val: ",val);
+        
         // if(e.target.value == null) return;
-        setSource(e.target.value);
+        setSource(val);
     }
     const handleTargetChange = (e)=>{
         e.preventDefault();
+        const val = e.target.value;
+        console.log("val: ",val);
+
         // if(e.target.value == null) return;
-        setTarget(e.target.value);
+        setTarget(val);
     }
 
 

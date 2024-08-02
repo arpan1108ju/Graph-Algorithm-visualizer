@@ -69,7 +69,9 @@ export default function SelectAlgo() {
     };
 
     const handleSelectAlgo = (label)=>{
-        handleClose();
+        setTimeout(() => {
+            handleClose();
+        }, 200);
         console.log("label: ", label);
         setAlgo(label);
     }

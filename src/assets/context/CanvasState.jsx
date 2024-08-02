@@ -44,16 +44,18 @@ export default function CanvasState(props) {
   }
 
   const checkNodeExistence = (node)=>{
+      let found = false;
       elements.forEach((e)=>{
-        if(e.data.id === node){
-           return true;
+        if(e.data.id === node.toLowerCase()){
+           found = true;
           }
       })
-      return false;
+      return found;
   }
 
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
+
     if (checkNodeExistence(source) && checkNodeExistence(target)) setElements([...elements, newEdge]);
     else toast.error("Node does not exist!");
   }
@@ -62,7 +64,10 @@ export default function CanvasState(props) {
     const { x, y } = generateRandomPosition();
     const newNode = { data: { id: id }, position: { x: x, y: y } };
     setElements([...elements, newNode]);
-    console.log('new element', elements);
+    setTimeout(() => {
+      console.log('new element', elements);
+      
+    }, 1000);
 
   }
 
@@ -72,7 +77,7 @@ export default function CanvasState(props) {
     //  setIsDirected(!isDirected);
     const newStyleSheet = stylesheet.map((sheet) => {
       if (sheet.selector === 'edge') {
-        sheet.style.label = newWeighted ? data(weight) : '';
+        sheet.style.label = newWeighted ? 'data(weight)' : '';
       }
       return sheet;
     });
