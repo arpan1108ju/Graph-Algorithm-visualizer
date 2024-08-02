@@ -68,7 +68,7 @@ const Graph = () => {
         <div><Switch defaultChecked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <DropdownButtonNode />
         <SelectAlgo/>
-        <SelectStartNode/>
+        <SelectStartNode />
         <DropdownButtonEdge />
        </div>
 

@@ -12,32 +12,22 @@ export default function CanvasState(props) {
   const [elements, setElements] = useState(initialElements);
   const [isDirected, setIsDirected] = useState(false);
   const [isWeighted, setIsWeighted] = useState(false);
-  const [startNode, setStartNode] = useState('');
+  const [startNode, setStartNode] = useState(elements.length > 0? elements[0].data.id:'');
 
   const [graph, setGraph] = useState({});
 
-
-    const createGraph = (callback) => {
-          var graphObj = {};
-          elements.map((element) => {
-            // element is node
-            if(element.position){
-                graphObj[element.data.id] = [];
-            }
-            // element is edge
-            else if(element.data.source){
-              graphObj[element.data.source].push([element.data.target,element.data.weight]);
-              if(!isDirected){
-                graphObj[element.data.target].push([element.data.source,element.data.weight]);
-              }
-            }
-            return element;
-          })
-    
-        setGraph((g) => graphObj);
-        
-        if(callback){
-          callback(graphObj);        
+  const createGraph = (callback) => {
+    var graphObj = {};
+    elements.map((element) => {
+      // element is node
+      if (element.position) {
+        graphObj[element.data.id] = [];
+      }
+      // element is edge
+      else if (element.data.source) {
+        graphObj[element.data.source].push([element.data.target, element.data.weight]);
+        if (!isDirected) {
+          graphObj[element.data.target].push([element.data.source, element.data.weight]);
         }
       }
       return element;
@@ -52,6 +42,19 @@ export default function CanvasState(props) {
 
   }
 
+  const checkNodeExistence = (node)=>{
+    let found = false;
+      elements.map((e)=>{
+        if(e.data.id === node){
+          found = true;
+          return;
+          }
+      })
+      if(found){
+        setStartNode(node);
+        console.log('start node changed', startNode);
+      }
+  }
 
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
@@ -72,7 +75,7 @@ export default function CanvasState(props) {
     //  setIsDirected(!isDirected);
     const newStyleSheet = stylesheet.map((sheet) => {
       if (sheet.selector === 'edge') {
-        sheet.style.label = newWeighted ? `data(weight)` : '';
+        sheet.style.label = newWeighted ? data(weight) : '';
       }
       return sheet;
     });
@@ -97,9 +100,10 @@ export default function CanvasState(props) {
     cy?.style().clear().fromJson(stylesheet).update();
   }
 
+
+
   const changeStartNode = (node) => {
-      setStartNode(node);
-      console.log('start node changed', startNode);
+    
   }
 
 
@@ -109,4 +113,3 @@ export default function CanvasState(props) {
     </canvasContext.Provider>
   )
 }
-
