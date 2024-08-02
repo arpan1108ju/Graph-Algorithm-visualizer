@@ -42,7 +42,7 @@ export const initalStylesheet = [
   {
     selector: 'edge',
     style: {
-      'label' : 'data(weight)',
+      'label' : '',
       'width': 3,
       'line-color': '#ccc',
       'target-arrow-color': '#ccc',

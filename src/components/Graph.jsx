@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useCallback, useContext, useEffect, useTransition } from 'react';
+import React, { useCallback, useContext, useEffect, useTransition, useState} from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { layout} from '../constants';
 
@@ -8,10 +8,15 @@ import DropdownButtonNode from './DropdownButtonNode';
 import canvasContext from '../assets/context/CanvasContext';
 import { dfs } from '../algorithms/dfs';
 
+import Checkbox from '@mui/material/Checkbox';
+import SelectAlgo from './SelectAlgo';
+import SelectStartNode from './SelectStartNode';
+
+import Switch from '@mui/material/Switch';
 
 const Graph = () => {
   const context = useContext(canvasContext);
-  const {cy,setCy,elements, stylesheet,toggleWeighted,createGraph,graph
+  const {cy,setCy,elements, stylesheet,toggleWeighted,toggleDirected,createGraph,graph
     ,isDirected,isWeighted
    } = context;
   
@@ -44,6 +49,14 @@ const Graph = () => {
      
   };
 
+  const handleChangeDierectedness = ()=>{
+    toggleDirected();
+  }
+  const handleChangeWeightedness = ()=>{
+    console.log("isWeighted prev: ",isWeighted);
+    toggleWeighted();
+  }
+
   return (
     <div className="h-screen ">
 
@@ -51,7 +64,11 @@ const Graph = () => {
         <Button onClick={onClick} variant='contained' className='bg-red-300' disabled={isPending}>
             Start Animation
         </Button>
+        <div><Switch defaultChecked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
+        <div><Switch defaultChecked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <DropdownButtonNode />
+        <SelectAlgo/>
+        <SelectStartNode/>
         <DropdownButtonEdge />
        </div>
 

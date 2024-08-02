@@ -5,12 +5,9 @@ import Menu from '@mui/material/Menu';
 
 import Divider from '@mui/material/Divider';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import CloseIcon from '@mui/icons-material/Close';
-import DoneIcon from '@mui/icons-material/Done';
-import { IconButton } from '@mui/material';
 import { useState, useContext } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
-import { formEdgeId } from '../utils/formatColor';
+import Checkbox from '@mui/material/Checkbox';
 
 
 const StyledMenu = styled((props) => (
@@ -54,14 +51,14 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function DropdownButtonEdge() {
+export default function SelectAlgo() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [weight, setWeight] = useState(0);
-    const [source, setSource] = useState("");
-    const [target, setTarget] = useState("");
-
     const context = useContext(canvasContext);
-    const {addEdge, isWeighted, isDirected} = context;
+    const {algo, setAlgo} = context;
+    const dfs = 'dfs';
+    const bfs = 'bfs';
+    const dijkstra = 'dijkstra';
+    const bellmanford = 'bellmanford';
 
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -69,30 +66,12 @@ export default function DropdownButtonEdge() {
     };
     const handleClose = () => {
         setAnchorEl(null);
-        console.log("weight: ",weight," source: ",source," target: ",target);
     };
 
-    const handleWeightChange = (e)=>{
-        e.preventDefault();
-        if(e.target.value == null) return;
-        setWeight(e.target.value);
-    }
-    const handleSourceChange = (e)=>{
-        e.preventDefault();
-        if(e.target.value == null) return;
-        setSource(e.target.value);
-    }
-    const handleTargetChange = (e)=>{
-        e.preventDefault();
-        if(e.target.value == null) return;
-        setTarget(e.target.value);
-    }
-
-
-    const handleSave = ()=>{
-        const id = formEdgeId(source,target);
-        addEdge(id, source, target,weight);
+    const handleSelectAlgo = (label)=>{
         handleClose();
+        console.log("label: ", label);
+        setAlgo(label);
     }
 
 
@@ -108,7 +87,7 @@ export default function DropdownButtonEdge() {
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
             >
-                Add Edge
+                Select Algorithm
             </Button>
             <StyledMenu
                 id="demo-customized-menu"
@@ -119,35 +98,13 @@ export default function DropdownButtonEdge() {
                 open={open}
                 onClose={handleClose}
             >
-                <div className='p-1'>
-                    <label htmlFor="source" className=' w-16 mr-1'>{isDirected?'From:':'First:'}</label>
-                    <input type="text" id='surce' className='w-16 p-1 bg-gray-200 rounded-lg' value={source} onChange={handleSourceChange}/>
-                </div>
+                <div><Checkbox onClick={()=>handleSelectAlgo(dfs)}/>DFS</div>
                 <Divider sx={{ my: 0.5 }} />
-
-                <div className='p-1'>
-                    <label htmlFor="target" className=' w-16 mr-2'>{isDirected?'To:':'Second:'}</label>
-                    <input type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
-                </div>
-
+                <div><Checkbox onClick={()=>handleSelectAlgo(bfs)}/>BFS</div>
                 <Divider sx={{ my: 0.5 }} />
-
-                {isWeighted === true && <div className='p-1'>
-                    <label htmlFor="weight" className=' w-16 mr-1'>Weight:</label>
-                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
-                </div>}
-
+                <div><Checkbox onClick={()=>handleSelectAlgo(dijkstra)}/>Dijkstras</div>
                 <Divider sx={{ my: 0.5 }} />
-                <div className='flex flex-row justify-around items-center'>
-                    <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
-                        <CloseIcon />
-                    </IconButton>
-                    <IconButton aria-label='cancel' color="success" size='small' onClick={handleSave}>
-                        <DoneIcon />
-                    </IconButton>
-                   
-                </div>
-
+                <div><Checkbox onClick={()=>handleSelectAlgo(bellmanford)}/>Bellmanford</div>
             </StyledMenu>
         </div>
     );
