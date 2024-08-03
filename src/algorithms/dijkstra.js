@@ -1,5 +1,5 @@
-import { ANIMATION_TIME_MS, STATE } from "../constants";
-import { animateEdge, animateNode } from "../utils/formatColor";
+import { ANIMATION_TIME_MS, sleep, STATE } from "../constants";
+import { animateEdge, animateNode,flashTableRowBgColor } from "../utils/formatColor";
 
 class PriorityQueue {
     constructor() {
@@ -24,7 +24,7 @@ class PriorityQueue {
     }
 }
 
-export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance) => {
+export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor) => {
     console.log('dijkstra called');
     // Implementation for Dijkstra's algorithm
 
@@ -39,16 +39,23 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
     const parent = {};
     parent[startNode] ='#'
 
+
+
     while (!pq.isEmpty()) {
         const { key: currentNode } = pq.dequeue();
-        console.log("node: ",currentNode," parent: ",parent[currentNode]);
+        // console.log("node: ",currentNode," parent: ",parent[currentNode]);
         
         await animateEdge(cy,parent[currentNode], currentNode,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
         await animateNode(cy,currentNode,STATE.VISITED,ANIMATION_TIME_MS);
 
+
         for (const [neighbor, edgeWeight] of graph[currentNode]) {
             const distance = parseInt(distances[currentNode], 10) + parseInt(edgeWeight, 10);
             if (distance < distances[neighbor]) {
+                // console.log('updating dist start : ',neighbor);
+                await flashTableRowBgColor(neighbor,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
+                await sleep(ANIMATION_TIME_MS);
+                // console.log('updating dist end : ',neighbor);
                 distances[neighbor] = distance;
                 changeDistance(neighbor, distance);
                 parent[neighbor] = currentNode;

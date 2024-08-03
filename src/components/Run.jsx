@@ -19,7 +19,7 @@ const Run = () => {
 
     const context = useContext(canvasContext);
     const {startNode, cy,createGraph,algo
-      ,isDirected,isWeighted, changeDistance
+      ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor
      } = context;
 
 
@@ -37,7 +37,7 @@ const Run = () => {
                     break;
               
                   case GRAPH_ALGORITHM.DIJKSTRA:
-                    dijkstra(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance);
+                    dijkstra(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor);
                     break;
               
                   case GRAPH_ALGORITHM.BELLMAN_FORD:

@@ -7,7 +7,14 @@ export const VISITED_COLOR_NODE = '#f12000';
 export const UNVISITED_COLOR_NODE = '#666666';
 export const INITIAL_COLOR_NODE = '#666666';
 
-export var ANIMATION_TIME_MS = 300;
+export const TABLE_ROW_BG_COLOR = '#FFFFFF';
+export const TABLE_ROW_BG_FLASH_COLOR = '#C8C8C8';
+
+export const ANIMATION_TIME_MS = 500;
+
+export function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export const STATE =  Object.freeze({
     VISITED : 1,
@@ -35,10 +42,12 @@ export const initialElements = [
     { data: { id: 'c' }, position: { x: 300, y: 150 } },
     { data: { id: 'd' }, position: { x: 400, y: 100 } },
     { data: { id: 'e' }, position: { x: 500, y: 200 } },
-    { data: { id: 'a-b', source: 'a', target: 'b' , weight : 0} },
-    { data: { id: 'b-c', source: 'b', target: 'c' , weight : 0} },
-    { data: { id: 'c-d', source: 'c', target: 'd' , weight : 0} },
-    { data: { id: 'd-e', source: 'd', target: 'e' , weight : 0} }
+    { data: { id: 'a-b', source: 'a', target: 'b' , weight : 1} },
+    { data: { id: 'b-c', source: 'b', target: 'c' , weight : 2} },
+    { data: { id: 'c-d', source: 'c', target: 'd' , weight : 3} },
+    { data: { id: 'd-e', source: 'd', target: 'e' , weight : 4} },
+    { data: { id: 'a-c', source: 'a', target: 'c' , weight : 5} },
+    { data: { id: 'b-d', source: 'b', target: 'd' , weight : 5} },
   ];
 
 export const initalStylesheet = [

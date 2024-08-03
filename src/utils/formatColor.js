@@ -1,4 +1,4 @@
-import { INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, STATE, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
+import { INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, STATE, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
 
 export const colorNode = (cyNode,color) => {
     cyNode.style({ 'background-color': color});
@@ -11,6 +11,23 @@ export const colorEdge = (cyEdge,color) => {
 export const colorEdgeArrow = (cyEdge,color) => {
     cyEdge.style({'target-arrow-color': color});
 }
+
+export const flashTableRowBgColor = (nodeId,duration,setActiveTableRowId,setTableRowBgColor) => {
+
+    // console.log('i am outside : ',nodeId);
+    setActiveTableRowId(nodeId);
+    setTableRowBgColor(TABLE_ROW_BG_FLASH_COLOR);
+
+    return new Promise(resolve => {
+      setTimeout(() => {
+            // console.log('i am inside : ',nodeId);
+          setTableRowBgColor(TABLE_ROW_BG_COLOR);
+        //   setActiveTableRowId(null);
+       },duration);
+       resolve();
+    })
+
+  }
 
 export const animateNode = (cy,nodeId,state,duration) => {
 

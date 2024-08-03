@@ -1,7 +1,7 @@
 import React, { useTransition } from 'react'
 import canvasContext from './CanvasContext'
 import { useState } from 'react'
-import { GRAPH_ALGORITHM, initalStylesheet, initialElements } from '../../constants';
+import { GRAPH_ALGORITHM, initalStylesheet, initialElements, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR } from '../../constants';
 import { generateRandomPosition } from '../../utils/formatColor';
 import { toast } from 'react-toastify';
 
@@ -17,12 +17,17 @@ export default function CanvasState(props) {
   const [isPending, startTransition] = useTransition();
   const [nodes, setNewNode] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
   const [graph, setGraph] = useState({});
-
-
+  const [tableRowBgColor,setTableRowBgColor] = useState(TABLE_ROW_BG_COLOR);
+  const [activeTableRowId,setActiveTableRowId] = useState(null);
   const [distanceArray, setDistanceValue] = useState(nodes.reduce((acc, node) => {
     acc[node] = Infinity;
     return acc;
   }, {}));
+
+
+  
+
+
 
   const createGraph = (callback) => {
     var graphObj = {};
@@ -151,7 +156,7 @@ export default function CanvasState(props) {
         }
 
   return (
-    <canvasContext.Provider value={{setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
+    <canvasContext.Provider value={{setActiveTableRowId,setTableRowBgColor,activeTableRowId,tableRowBgColor,setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
       {props.children}
     </canvasContext.Provider>
   )

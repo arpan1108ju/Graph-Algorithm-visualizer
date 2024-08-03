@@ -1,10 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import canvasContext from '../assets/context/CanvasContext';
 
 const DistanceVisualizer = () => {
   const context = useContext(canvasContext);
-  const {nodes, distanceArray} = context;
+  const {nodes, distanceArray,tableRowBgColor,activeTableRowId} = context;
+  
+  useEffect(()=>{
+
+  },[activeTableRowId]);
+
+  // const [isUpdating,setIs]
+
+
   // console.log("distanceArray in visualizer: ", distanceArray);
   
   return (
@@ -18,12 +26,15 @@ const DistanceVisualizer = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {nodes.map((node, index) => (
-              <TableRow key={node}>
-                <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto' }}>{node}</TableCell>
-                <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto' }}>{distanceArray[node] === Infinity?'∞':distanceArray[node]}</TableCell>
-              </TableRow>
-            ))}
+            {nodes.map((node, index) => {
+              // if(activeTableRowId === node) console.log('rendering ',activeTableRowId);
+              return (
+                <TableRow key={node} sx={ activeTableRowId === node ? { backgroundColor : tableRowBgColor } : {}} >
+                  <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto'}}>{node}</TableCell>
+                  <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto'}}>{distanceArray[node] === Infinity?'∞':distanceArray[node]}</TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>
