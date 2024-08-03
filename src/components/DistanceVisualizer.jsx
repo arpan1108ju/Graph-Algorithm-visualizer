@@ -1,61 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import canvasContext from '../assets/context/CanvasContext';
 
 const DistanceVisualizer = () => {
-  const [distances, setDistances] = useState({ A: 0, B: Infinity, C: Infinity, D: Infinity, E: Infinity, F: Infinity, G: Infinity, H: Infinity });
-
-  // Simulate an update to the distances array
-  const updateDistances = () => {
-    setDistances({
-      A: 0,
-      B: 1,
-      C: 3,
-      D: 4,
-      E: 5,
-      F: 4,
-      G: 6,
-      H: 8,
-    });
-  };
-
-  useEffect(() => {
-    // You can trigger updates based on certain events or after specific intervals
-    // For demonstration, we'll call updateDistances after 2 seconds
-    const timer = setTimeout(updateDistances, 2000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const nodes = Object.keys(distances);
-  const distanceValues = Object.values(distances).map(distance => distance === Infinity ? '∞' : distance);
-
+  const context = useContext(canvasContext);
+  const {nodes, distanceArray} = context;
+  // console.log("distanceArray in visualizer: ", distanceArray);
+  
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          {/* <TableRow>
-            <TableCell colSpan={nodes.length} align="center">Nodes</TableCell>
-          </TableRow> */}
-          <TableRow>
-            {nodes.map(node => (
-              <TableCell key={node} align="center" style={{ padding: '4px' }}>{node}</TableCell>
+    <div className=' w-full bg-purple-300'>
+      <TableContainer component={Paper} >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" sx={{ padding: '4px' }}>Node</TableCell>
+              <TableCell align="center" sx={{ padding: '4px' }}>Distance</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {nodes.map((node, index) => (
+              <TableRow key={node}>
+                <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto' }}>{node}</TableCell>
+                <TableCell align="center" sx={{ padding: '4px', minWidth: 'auto' }}>{distanceArray[node] === Infinity?'∞':distanceArray[node]}</TableCell>
+              </TableRow>
             ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {/* <TableRow>
-            <TableCell colSpan={nodes.length} align="center">Distances</TableCell>
-          </TableRow> */}
-          <TableRow>
-            {distanceValues.map((distance, index) => (
-              <TableCell key={index} align="center" style={{ padding: '4px' }}>{distance}</TableCell>
-            ))}
-          </TableRow>
-        </TableBody>
-      </Table>
-      {/* <Button variant="contained" color="primary" onClick={updateDistances} style={{ margin: '10px' }}>
-        Update Distances
-      </Button> */}
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+
   );
 };
 

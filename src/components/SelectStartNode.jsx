@@ -55,7 +55,7 @@ const StyledMenu = styled((props) => (
 export default function SelectStartNode() {
     const [anchorEl, setAnchorEl] = useState(null);
     const context = useContext(canvasContext);
-    const {startNode, changeStartNode} = context;
+    const {startNode, changeStartNode, changeDistance} = context;
     const [inputNode, setInputNode] = useState('');
 
     const open = Boolean(anchorEl);
@@ -71,6 +71,7 @@ export default function SelectStartNode() {
         setInputNode(e.target.value);
     }
     const handleSave = ()=>{
+        changeDistance(inputNode,0);
         handleClose();
         console.log("label: ", inputNode);
         changeStartNode(inputNode);

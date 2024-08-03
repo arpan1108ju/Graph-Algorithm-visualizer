@@ -7,13 +7,14 @@ import { ResetColor } from '../utils/formatColor';
 const Reset = () => {
 
     const context = useContext(canvasContext);
-    const { cy,elements, 
+    const { cy,elements,setDistanceToInfinity 
      } = context;
 
    
    const onClick = () => {
        if(!cy) return;
        ResetColor(cy,elements);
+       setDistanceToInfinity();
    };  
 
   return (

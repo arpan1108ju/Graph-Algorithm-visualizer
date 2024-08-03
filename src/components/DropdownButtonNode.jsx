@@ -74,6 +74,7 @@ export default function DropdownButtonNode() {
     }
     
     const handleSave = ()=>{
+        console.log("id: ",nodeValue);
         const id = nodeValue;
         addNode(id);
         handleClose();
