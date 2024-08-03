@@ -1,112 +1,71 @@
-import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-
-import Divider from '@mui/material/Divider';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useState, useContext } from 'react';
+import { Menu, MenuButton, MenuItems } from '@headlessui/react';
+import { useContext, useRef, useState } from 'react';
 import canvasContext from '../assets/context/CanvasContext';
-import DoneIcon from '@mui/icons-material/Done';
-import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import DoneIcon from '@mui/icons-material/Done';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const StyledMenu = styled((props) => (
-    <Menu
-        elevation={0}
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-        }}
-        transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        {...props}
-    />
-))(({ theme }) => ({
-    '& .MuiPaper-root': {
-        borderRadius: 6,
-        marginTop: theme.spacing(1),
-        minWidth: 120,
-        color:
-            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-        boxShadow:
-            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-        '& .MuiMenu-list': {
-            padding: '4px 0',
-        },
-        '& .Muidiv-root': {
-            '& .MuiSvgIcon-root': {
-                fontSize: 18,
-                color: theme.palette.text.secondary,
-                marginRight: theme.spacing(1.5),
-            },
-            '&:active': {
-                backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    theme.palette.action.selectedOpacity,
-                ),
-            },
-        },
-    },
-}));
 
 export default function SelectStartNode() {
-    const [anchorEl, setAnchorEl] = useState(null);
+
+    const [node, setNode] = useState("");
+
+    const buttonRef = useRef(null);
+
     const context = useContext(canvasContext);
     const {startNode, changeStartNode} = context;
-    const [inputNode, setInputNode] = useState('');
 
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+
+    document.getElementById('menu-start-node')?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && node.length) {
+         console.log('enter key pressed');
+         handleSave();
+      }
+    });
+
     const handleClose = () => {
-        setAnchorEl(null);
+  
+       buttonRef?.current.click();
+       setNode("");
     };
-    
-    const handleChangeInputNode = (e)=>{
+
+   
+    const handleNodeChange = (e)=>{
         e.preventDefault();
-        setInputNode(e.target.value);
+        if(e.target.value == null) return;
+        setNode(e.target.value);
     }
+
+
     const handleSave = ()=>{
+        const id = node;
+        changeStartNode(id);
         handleClose();
-        console.log("label: ", inputNode);
-        changeStartNode(inputNode);
     }
 
 
-    return (
-        <div className='px-4'>
-            <Button
-                id="demo-customized-button"
-                aria-controls={open ? 'demo-customized-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
-            >
-                Select Start Node
-            </Button>
-            <StyledMenu
-                id="demo-customized-menu"
-                MenuListProps={{
-                    'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-            >
-                <div  className='p-1'>
-                    <label htmlFor="node-value" className=' w-16 mr-2'>Label:</label>
-                    <input type="text" id='surce' className=' p-1 bg-gray-200 rounded-lg w-16' value={inputNode} onChange={handleChangeInputNode}/>
-                </div> 
-                <Divider sx={{ my: 0.5 }} />
+  return (
+    <Menu  as="div" id="menu-start-node" className="relative inline-block text-left px-3">
+      <div>
+        <MenuButton ref={buttonRef} className=" inline-flex w-40 justify-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-inset ring-gray-300 hover:bg-blue-500">
+          <span>Select Start Node</span>
+            <KeyboardArrowDownIcon className='mt-2'/>
+        </MenuButton>
+      </div>
+
+      <MenuItems
+      
+      transition
+      className="absolute left-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+      >
+                <div className='p-1 flex flex-row justify-between'>
+                    <label className=' w-16 mr-1'>Node: </label>
+                    <input required type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={node} onChange={handleNodeChange}/>
+                </div>
+                
                 <div className='flex flex-row justify-around items-center'>
-                <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
+                    <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>
                     <IconButton aria-label='cancel' color="success" size='small' onClick={handleSave}>
@@ -114,7 +73,7 @@ export default function SelectStartNode() {
                     </IconButton>
                    
                 </div>
-            </StyledMenu>
-        </div>
-    );
+      </MenuItems>
+    </Menu>
+  );
 }

@@ -1,75 +1,38 @@
-import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-
-import Divider from '@mui/material/Divider';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Menu, MenuButton, MenuItems } from '@headlessui/react';
+import { useContext, useRef, useState } from 'react';
+import canvasContext from '../assets/context/CanvasContext';
+import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
-import { IconButton } from '@mui/material';
-import { useState, useContext } from 'react';
-import canvasContext from '../assets/context/CanvasContext';
 import { formEdgeId } from '../utils/formatColor';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-
-const StyledMenu = styled((props) => (
-    <Menu
-        elevation={0}
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-        }}
-        transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        {...props}
-    />
-))(({ theme }) => ({
-    '& .MuiPaper-root': {
-        borderRadius: 6,
-        marginTop: theme.spacing(1),
-        minWidth: 120,
-        color:
-            theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-        boxShadow:
-            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-        '& .MuiMenu-list': {
-            padding: '4px 0',
-        },
-        '& .Muidiv-root': {
-            '& .MuiSvgIcon-root': {
-                fontSize: 18,
-                color: theme.palette.text.secondary,
-                marginRight: theme.spacing(1.5),
-            },
-            '&:active': {
-                backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    theme.palette.action.selectedOpacity,
-                ),
-            },
-        },
-    },
-}));
 
 export default function DropdownButtonEdge() {
-    const [anchorEl, setAnchorEl] = useState(null);
+
     const [weight, setWeight] = useState(0);
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
 
+    const buttonRef = useRef(null);
+
     const context = useContext(canvasContext);
     const {addEdge, isWeighted, isDirected} = context;
 
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+
+    document.getElementById('menu-edge')?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && source.length && target.length) {
+         console.log('enter key pressed');
+         handleSave();
+      }
+    });
+
     const handleClose = () => {
-        setAnchorEl(null);
-        // console.log("weight: ",weight," source: ",source," target: ",target);
+  
+       buttonRef?.current.click();
+       setSource('');
+       setTarget('');
+       setWeight(0);
     };
 
     const handleWeightChange = (e)=>{
@@ -80,7 +43,7 @@ export default function DropdownButtonEdge() {
     const handleSourceChange = (e)=>{
         e.preventDefault();
         const val = e.target.value;
-        console.log("val: ",e);
+        // console.log("val: ",e);
         
         if(e.target.value == null) return;
         setSource(val);
@@ -88,7 +51,7 @@ export default function DropdownButtonEdge() {
     const handleTargetChange = (e)=>{
         e.preventDefault();
         const val = e.target.value;
-        console.log("val: ",val);
+        // console.log("val: ",val);
 
         if(e.target.value == null) return;
         setTarget(val);
@@ -99,53 +62,39 @@ export default function DropdownButtonEdge() {
         const id = formEdgeId(source,target);
         addEdge(id, source, target,weight);
         handleClose();
-        setSource('');
-        setTarget('');
     }
 
 
-    return (
-        <div className='px-4'>
-            <Button
-                id="demo-customized-button"
-                aria-controls={open ? 'demo-customized-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                variant="contained"
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
-            >
-                Add Edge
-            </Button>
-            <StyledMenu
-                id="demo-customized-menu"
-                MenuListProps={{
-                    'aria-labelledby': 'demo-customized-button',
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-            >
-                <div className='p-1'>
+  return (
+    <Menu  as="div" id="menu-edge" className="relative inline-block text-left px-3">
+      <div>
+        <MenuButton ref={buttonRef} className=" inline-flex w-20 justify-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-inset ring-gray-300 hover:bg-blue-500">
+          <span>Add Edge</span>
+            <KeyboardArrowDownIcon className='mt-2'/>
+        </MenuButton>
+      </div>
+
+      <MenuItems
+      
+      transition
+      className="absolute left-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+      >
+                <div className='p-1 flex flex-row justify-between'>
                     <label className=' w-16 mr-1'>{isDirected ? "From:" : "First:"}</label>
-                    <input type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={source} onChange={handleSourceChange}/>
+                    <input required type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={source} onChange={handleSourceChange}/>
                 </div>
-                <Divider sx={{ my: 0.5 }} />
                 
-                <div className='p-1'>
+                <div className='p-1  flex flex-row justify-between'>
                     <label htmlFor="target" className=' w-16 mr-2'>{isDirected?'To:':'Second:'}</label>
-                    <input type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
+                    <input required type="text" id='target' className='w-16 p-1 bg-gray-200 rounded-lg' value={target} onChange={handleTargetChange}/>
                 </div>
 
-                <Divider sx={{ my: 0.5 }} />
 
-                {isWeighted === true && <div className='p-1'>
+                {isWeighted === true && <div className='p-1  flex flex-row justify-between'>
                     <label htmlFor="weight" className=' w-16 mr-1'>Weight:</label>
                     <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
                 </div>}
 
-                <Divider sx={{ my: 0.5 }} />
                 <div className='flex flex-row justify-around items-center'>
                     <IconButton aria-label='cancel' color="error" size='small' onClick={handleClose}>
                         <CloseIcon />
@@ -155,8 +104,7 @@ export default function DropdownButtonEdge() {
                     </IconButton>
                    
                 </div>
-
-            </StyledMenu>
-        </div>
-    );
+      </MenuItems>
+    </Menu>
+  );
 }

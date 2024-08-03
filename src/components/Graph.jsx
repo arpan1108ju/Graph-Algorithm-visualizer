@@ -1,16 +1,14 @@
-import { Button } from '@mui/material';
-import React, { useCallback, useContext, useEffect, useTransition, useState} from 'react';
+
+import React, { useCallback, useContext, useEffect} from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
 import { layout} from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
-// import DropdownButtonEdge2 from './DropdownEdge2';
 
 import DropdownButtonNode from './DropdownButtonNode';
 import canvasContext from '../assets/context/CanvasContext';
-import { dfs } from '../algorithms/dfs';
 
-import Checkbox from '@mui/material/Checkbox';
+
 import SelectAlgo from './SelectAlgo';
 import SelectStartNode from './SelectStartNode';
 
@@ -49,9 +47,9 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
+    
         <DropdownButtonNode />
         <DropdownButtonEdge />
-        {/* <DropdownButtonEdge2/> */}
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>
         <div><Switch checked={isWeighted} onClick={handleChangeWeightedness}/>Weighted</div>
         <SelectAlgo/>
