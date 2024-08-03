@@ -127,7 +127,10 @@ export default function CanvasState(props) {
 
   const changeStartNode = (node) => {
     const check = checkNodeExistence(node);
-    if (check) setStartNode(node);
+    if (check){
+      setStartNode(node);
+      changeDistance(node, 0);
+    } 
     else {
       toast.error("Node does not exist!")
     }

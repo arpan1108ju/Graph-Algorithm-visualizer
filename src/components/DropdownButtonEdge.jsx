@@ -6,11 +6,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import { formEdgeId } from '../utils/formatColor';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { toast } from 'react-toastify';
 
 
 export default function DropdownButtonEdge() {
 
-    const [weight, setWeight] = useState(0);
+    const [weight, setWeight] = useState('0');
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
 
@@ -60,7 +61,13 @@ export default function DropdownButtonEdge() {
 
     const handleSave = ()=>{
         const id = formEdgeId(source,target);
-        addEdge(id, source, target,weight);
+        try {
+          const wt = parseFloat(weight,10);
+          addEdge(id, source, target,wt);
+          
+        } catch (error) {
+          toast.error("Please enter correct weight")
+        }
         handleClose();
     }
 
@@ -92,7 +99,7 @@ export default function DropdownButtonEdge() {
 
                 {isWeighted === true && <div className='p-1  flex flex-row justify-between'>
                     <label htmlFor="weight" className=' w-16 mr-1'>Weight:</label>
-                    <input type="number" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
+                    <input type="text" id='weight' className='w-16 p-1 bg-gray-200 rounded-lg' onChange={handleWeightChange} value={weight}/>
                 </div>}
 
                 <div className='flex flex-row justify-around items-center'>

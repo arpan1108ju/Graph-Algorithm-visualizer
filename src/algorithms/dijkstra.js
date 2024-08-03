@@ -27,7 +27,7 @@ class PriorityQueue {
 export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor) => {
     console.log('dijkstra called');
     // Implementation for Dijkstra's algorithm
-
+    changeDistance(startNode, 0);
     const distances = {};
     for (let node in graph) {
         distances[node] = Infinity;
@@ -50,7 +50,9 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
 
 
         for (const [neighbor, edgeWeight] of graph[currentNode]) {
+            if(edgeWeight < 0) return false;
             const distance = parseInt(distances[currentNode], 10) + parseInt(edgeWeight, 10);
+
             if (distance < distances[neighbor]) {
                 // console.log('updating dist start : ',neighbor);
                 await flashTableRowBgColor(neighbor,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
@@ -63,6 +65,7 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
             }
         }
     }
+
     console.log("distance array: ",distances);
-    
+    return true;
 };
