@@ -1,7 +1,9 @@
-import { ANIMATION_TIME_MS, STATE } from "../constants";
-import {  animateEdge, animateNode } from "../utils/formatColor";
+import { ANIMATION_TIME_MS, sleep, STATE } from "../constants";
+import {  animateEdge, animateNode, flashTableRowBgColor } from "../utils/formatColor";
 
-export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, changeDistance, nodes) => {
+export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, changeDistance, nodes,
+  setActiveTableRowId,setTableRowBgColor
+) => {
     console.log('bellmanFord called');
     // Implementation for Bellman-Ford algorithm
     // Step 1: Initialize distances from src to all other vertices as INFINITE
@@ -45,7 +47,9 @@ export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, 
               console.log("counter: ",counter++);
 
               await animateEdge(cy,src, dest,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
-              await animateNode(cy,dest,STATE.VISITED,ANIMATION_TIME_MS)
+              await animateNode(cy,dest,STATE.VISITED,ANIMATION_TIME_MS);
+              await flashTableRowBgColor(dest,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
+              await sleep(ANIMATION_TIME_MS);
 
               distances[dest] = distances[src] + weight;
               changeDistance(dest, distances[dest]);

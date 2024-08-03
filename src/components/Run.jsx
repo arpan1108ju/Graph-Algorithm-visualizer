@@ -19,7 +19,7 @@ import { kosaraju } from '../algorithms/kosaraju';
 const Run = () => {
 
     const context = useContext(canvasContext);
-    const {nodes, startNode, cy,createGraph,algo
+    const {startNode, cy,createGraph,algo,nodes
       ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor
      } = context;
 
@@ -42,7 +42,9 @@ const Run = () => {
                     break;
               
                   case GRAPH_ALGORITHM.BELLMAN_FORD:
-                    bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance, nodes).then((value)=>{
+                    bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance, nodes,
+                      setActiveTableRowId,setTableRowBgColor
+                    ).then((value)=>{
                       if(!value) toast.error("Negative cycle present in this graph!");
                     })
                     break;
