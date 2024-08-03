@@ -24,9 +24,10 @@ class PriorityQueue {
     }
 }
 
-export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted) => {
-    console.log('dijkstra');
+export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance) => {
+    console.log('dijkstra called');
     // Implementation for Dijkstra's algorithm
+
     const distances = {};
     for (let node in graph) {
         distances[node] = Infinity;
@@ -42,13 +43,14 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted) => 
         const { key: currentNode } = pq.dequeue();
         console.log("node: ",currentNode," parent: ",parent[currentNode]);
         
-        await animateNode(cy,currentNode,STATE.VISITED,ANIMATION_TIME_MS);
         await animateEdge(cy,parent[currentNode], currentNode,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
+        await animateNode(cy,currentNode,STATE.VISITED,ANIMATION_TIME_MS);
 
         for (const [neighbor, edgeWeight] of graph[currentNode]) {
             const distance = parseInt(distances[currentNode], 10) + parseInt(edgeWeight, 10);
             if (distance < distances[neighbor]) {
                 distances[neighbor] = distance;
+                changeDistance(neighbor, distance);
                 parent[neighbor] = currentNode;
                 pq.enqueue(distance, neighbor);
             }

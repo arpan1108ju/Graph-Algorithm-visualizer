@@ -1,13 +1,12 @@
 
 import React, { useCallback, useContext, useEffect} from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { layout} from '../constants';
+import { GRAPH_ALGORITHM, layout } from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
 
 import DropdownButtonNode from './DropdownButtonNode';
 import canvasContext from '../assets/context/CanvasContext';
-
 
 import SelectAlgo from './SelectAlgo';
 import SelectStartNode from './SelectStartNode';
@@ -15,31 +14,34 @@ import SelectStartNode from './SelectStartNode';
 import Switch from '@mui/material/Switch';
 import Run from './Run';
 import Reset from './Reset';
-import Draw from './Draw';
+import ClearGraph from './ClearGraph';
 
 import DistanceVisualizer from './DistanceVisualizer';
 
 const Graph = () => {
   const context = useContext(canvasContext);
-  const {startNode, cy,setCy,elements, stylesheet,toggleWeighted,toggleDirected,createGraph,graph
-    ,isDirected,isWeighted
-   } = context;
-  
+  const {algo, startNode, cy, setCy, elements, stylesheet, toggleWeighted, toggleDirected, createGraph, graph
+    , isDirected, isWeighted
+  } = context;
+
+  const showTable = ()=>{
+    return (algo === GRAPH_ALGORITHM.DIJKSTRA || algo === GRAPH_ALGORITHM.FLOYD_WARSHALL || algo === GRAPH_ALGORITHM.BELLMAN_FORD);
+  }
 
   const onCyReady = useCallback((cyGot) => {
     setCy(cyGot);
 
   }, []);
 
-  useEffect(()=>{
-    
-  },[stylesheet]);
+  useEffect(() => {
+
+  }, [stylesheet]);
 
 
-  const handleChangeDierectedness = ()=>{
+  const handleChangeDierectedness = () => {
     toggleDirected();
   }
-  const handleChangeWeightedness = ()=>{
+  const handleChangeWeightedness = () => {
     toggleWeighted();
   }
 
@@ -55,25 +57,28 @@ const Graph = () => {
         <SelectAlgo/>
         <SelectStartNode />
         <Run />
-        <Draw/>
+        <ClearGraph />
         <Reset />
-       </div>
-        <div>
-          <DistanceVisualizer />
-        </div>
+      </div>
+      <div>
+      </div>
 
-      <CytoscapeComponent
-        elements={elements}
-        stylesheet={stylesheet}
-        layout={layout}
-        style={{
-         width: '100%',
-         height: '100%',
-         backgroundColor : '#9da1f3ba'
-        }}
-        cy={onCyReady}
-        wheelSensitivity={0.05}
-      />
+      <div className="canvasComponent flex flex-row h-full w-full">
+        {/* <h1>Cytoscape</h1> */}
+        <CytoscapeComponent
+          elements={elements}
+          stylesheet={stylesheet}
+          layout={layout}
+          style={{
+            width: `${showTable()?'90%':'100%'}`,
+            height: '100%',
+            backgroundColor: '#9da1f3ba'
+          }}
+          cy={onCyReady}
+          wheelSensitivity={0.05}
+        />
+        {showTable()?<DistanceVisualizer />:null}
+      </div>
     </div>
   );
 };

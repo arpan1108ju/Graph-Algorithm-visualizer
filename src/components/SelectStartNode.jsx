@@ -9,12 +9,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function SelectStartNode() {
 
-    const [node, setNode] = useState("");
-
     const buttonRef = useRef(null);
 
     const context = useContext(canvasContext);
-    const {startNode, changeStartNode} = context;
+    const {startNode, changeStartNode, changeDistance} = context;
+    const [inputNode, setInputNode] = useState('');
 
 
     document.getElementById('menu-start-node')?.addEventListener('keydown', (event) => {
@@ -34,13 +33,12 @@ export default function SelectStartNode() {
     const handleNodeChange = (e)=>{
         e.preventDefault();
         if(e.target.value == null) return;
-        setNode(e.target.value);
+        setInputNode(e.target.value);
     }
 
 
     const handleSave = ()=>{
-        const id = node;
-        changeStartNode(id);
+        changeDistance(inputNode,0);
         handleClose();
     }
 
@@ -61,7 +59,7 @@ export default function SelectStartNode() {
       >
                 <div className='p-1 flex flex-row justify-between'>
                     <label className=' w-16 mr-1'>Node: </label>
-                    <input required type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={node} onChange={handleNodeChange}/>
+                    <input required type="text" id='source-input-in-edge' className='w-16 p-1 bg-gray-200 rounded-lg'  value={inputNode} onChange={handleNodeChange}/>
                 </div>
                 
                 <div className='flex flex-row justify-around items-center'>

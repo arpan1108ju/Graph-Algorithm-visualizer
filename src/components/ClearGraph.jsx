@@ -3,7 +3,7 @@ import { Button } from '@mui/material'
 import canvasContext from '../assets/context/CanvasContext'
 import { useState, useContext } from 'react'
 
-export default function Draw() {
+export default function ClearGraph() {
     const context = useContext(canvasContext);
     const {clearGraph} = context;
     const handleClearGraph = ()=>{
