@@ -15,11 +15,12 @@ import { prim } from '../algorithms/prim';
 import { topologicalSort } from '../algorithms/topologicalSort';
 import { tarjan } from '../algorithms/tarjan';
 import { kosaraju } from '../algorithms/kosaraju';
+
 const Run = () => {
 
     const context = useContext(canvasContext);
-    const {startNode, cy,createGraph,algo
-      ,isDirected,isWeighted, changeDistance
+    const {elements, startNode, cy,createGraph,algo
+      ,isDirected,isWeighted, changeDistance, nodes
      } = context;
 
 
@@ -37,11 +38,15 @@ const Run = () => {
                     break;
               
                   case GRAPH_ALGORITHM.DIJKSTRA:
-                    dijkstra(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance);
+                    dijkstra(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance).then((value)=>{
+                      if(!value) toast.error("Negative cycle present in this graph!");
+                    });
                     break;
               
                   case GRAPH_ALGORITHM.BELLMAN_FORD:
-                    bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance, nodes).then((value)=>{
+                      if(!value) toast.error("Negative cycle present in this graph!");
+                    })
                     break;
               
                   case GRAPH_ALGORITHM.A_STAR:

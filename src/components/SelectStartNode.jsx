@@ -41,7 +41,7 @@ export default function SelectStartNode() {
     const handleSave = ()=>{
         const id = node;
         changeStartNode(id);
-        changeDistance(id,0);   
+        // changeDistance(id,0);   
         handleClose();
     }
 
