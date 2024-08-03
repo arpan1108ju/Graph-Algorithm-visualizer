@@ -14,7 +14,7 @@ export default function SelectStartNode() {
     const buttonRef = useRef(null);
 
     const context = useContext(canvasContext);
-    const {startNode, changeStartNode} = context;
+    const {startNode, changeStartNode,changeDistance} = context;
 
 
     document.getElementById('menu-start-node')?.addEventListener('keydown', (event) => {
@@ -41,6 +41,7 @@ export default function SelectStartNode() {
     const handleSave = ()=>{
         const id = node;
         changeStartNode(id);
+        changeDistance(id,0);   
         handleClose();
     }
 
