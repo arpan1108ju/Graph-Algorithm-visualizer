@@ -68,6 +68,9 @@ export default function SelectAlgo() {
 
     const handleSelectAlgo = (e,label)=>{
         e.preventDefault();
+
+        handleClose();
+
         if(algo === label) return;
         console.log("label: ", label);
         setAlgo(label);
@@ -77,7 +80,7 @@ export default function SelectAlgo() {
 
 
     return (
-        <div className='p-4 '>
+        <div className='px-4 w-[237px]'>
             <Button
                 id="demo-customized-button"
                 aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -99,12 +102,11 @@ export default function SelectAlgo() {
                 open={open}
                 onClose={handleClose}
             >
-            <FormControl>
+            <FormControl >
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="female"
                         name="radio-buttons-group"
-                        className=''
                     >
                         {
                             Object.keys(GRAPH_ALGORITHM).map(key => {
@@ -115,7 +117,7 @@ export default function SelectAlgo() {
                                             control={<Radio />} 
                                             label={GRAPH_ALGORITHM[key]}
                                             onClick={(e) => handleSelectAlgo(e,GRAPH_ALGORITHM[key])}
-                                            className=' px-1'
+                                            className='pl-3 hover:bg-blue-50 hover:rounded-lg mr-4'
                                             checked = {algo === GRAPH_ALGORITHM[key]}
                                         />
                                     )
