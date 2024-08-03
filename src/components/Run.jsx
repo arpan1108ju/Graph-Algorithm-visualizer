@@ -19,7 +19,7 @@ import { kosaraju } from '../algorithms/kosaraju';
 const Run = () => {
 
     const context = useContext(canvasContext);
-    const {startNode, cy,createGraph,algo
+    const {nodes, startNode, cy,createGraph,algo
       ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor
      } = context;
 
