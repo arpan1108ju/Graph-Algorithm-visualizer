@@ -54,7 +54,7 @@ const Run = () => {
                     break;
               
                   case GRAPH_ALGORITHM.FLOYD_WARSHALL:
-                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistance);
                     break;
               
                   case GRAPH_ALGORITHM.KRUSKAL:

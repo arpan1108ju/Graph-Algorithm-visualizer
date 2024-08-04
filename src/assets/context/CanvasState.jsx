@@ -13,10 +13,11 @@ export default function CanvasState(props) {
   const [isDirected, setIsDirected] = useState(false);
   const [isWeighted, setIsWeighted] = useState(false);
   const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
-
+  console.log("elements***: ",elements);
+  
   const [isPending, startTransition] = useTransition();
-  const [nodes, setNewNode] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
-  const [edges, setNewEdge] = useState(elements.filter((e)=> e.data.source !== undefined).map((f)=>f.data.id));
+  const [nodes, setNewNode] = useState(elements?.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
+  const [edges, setNewEdge] = useState(elements?.filter((e)=> e.data.source !== undefined).map((f)=>f.data.id));
   const [graph, setGraph] = useState({});
   const [tableRowBgColor,setTableRowBgColor] = useState(TABLE_ROW_BG_COLOR);
   const [activeTableRowId,setActiveTableRowId] = useState(null);
@@ -82,8 +83,21 @@ export default function CanvasState(props) {
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
 
-    if (checkNodeExistence(source) && checkNodeExistence(target)) setElements([...elements, newEdge]);
+    if (checkNodeExistence(source) && checkNodeExistence(target)) {
+      console.log("edges**: ",edges);
+      console.log("id**:  ",id);
+      
+      
+      if(checkEdgeExistence(id)){
+        toast.error("Edge allready exists!");
+      }
+      else{
+        setElements([...elements, newEdge]);
+        setNewEdge([...edges, id]);
+      }
+    }
     else toast.error("Node does not exist!");
+      
   }
   const deleteEdge = (id) => {
     let found = checkEdgeExistence(id);
@@ -104,6 +118,7 @@ export default function CanvasState(props) {
   }
 
   const addNode = (id) => {
+    console.log("node id at add node: ",id);
     let found = checkNodeExistence(id);
     if (!found) {
       setNewNode([...nodes, id]);
@@ -118,7 +133,7 @@ export default function CanvasState(props) {
       }));
     }
     else{
-      toast.error("Node already exists");
+      toast.error("Node already exists!");
     }
   }
 
@@ -212,6 +227,8 @@ export default function CanvasState(props) {
     setElements([]);
     setDistanceValue({});
     setNewNode([])
+    setStartNode(null);
+    setNewEdge([]);
   }
 
   const changeDistance = (id, newDistance) => {   
