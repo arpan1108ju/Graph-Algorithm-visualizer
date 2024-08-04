@@ -57,7 +57,7 @@ export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, 
         }
     }
 
-    // // Step 3: Check for negative-weight cycles.
+    // Step 3: Check for negative-weight cycles.
     for(let i = 0; i<edges.length; i++){
       const src = edges[i].source;
       const dest = edges[i].target;

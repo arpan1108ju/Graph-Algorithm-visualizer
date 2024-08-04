@@ -17,11 +17,13 @@ import Reset from './Reset';
 import ClearGraph from './ClearGraph';
 
 import DistanceVisualizer from './DistanceVisualizer';
+import NodeMenu from './NodeMenu';
+import EdgeMenu from './EdgeMenu';
 
 const Graph = () => {
   const context = useContext(canvasContext);
   const {algo, startNode, cy, setCy, elements, stylesheet, toggleWeighted, toggleDirected, createGraph, graph
-    , isDirected, isWeighted
+    , isDirected, isWeighted , deleteNode,deleteEdge
   } = context;
 
   const showTable = ()=>{
@@ -29,13 +31,28 @@ const Graph = () => {
   }
 
   const onCyReady = useCallback((cyGot) => {
-    setCy(cyGot);
+      setCy(cyGot);
+      // cy?.on('cxttap','node',(e) => {
+      //   e.preventDefault();
+      //   var node = e.target;
+      //   console.log(`To remove : `,node.id());
+      //   setAnchorEl(node);
+      // })
+  
+      // cy?.on('cxttap','edge',(e) => {
+      //   var edge = e.target;
+      //   console.log(`To remove : `,edge.id());
+        
+      // })
 
-  }, []);
+  }, [cy]);
 
   useEffect(() => {
 
   }, [stylesheet]);
+
+  
+
 
 
   const handleChangeDierectedness = () => {
@@ -49,7 +66,8 @@ const Graph = () => {
     <div className="h-screen ">
 
        <div className='flex flex-row justify-between items-center bg-amber-400 py-4'>
-    
+        <NodeMenu cy={cy} deleteNode={deleteNode}/>
+        <EdgeMenu cy={cy} deleteEdge={deleteEdge} />
         <DropdownButtonNode />
         <DropdownButtonEdge />
         <div><Switch checked={isDirected} onClick={handleChangeDierectedness}/>Directed</div>

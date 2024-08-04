@@ -15,7 +15,8 @@ export default function CanvasState(props) {
   const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
 
   const [isPending, startTransition] = useTransition();
-  const [nodes, setNodes] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
+  const [nodes, setNewNode] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
+  const [edges, setNewEdge] = useState(elements.filter((e)=> e.data.source !== undefined).map((f)=>f.data.id));
   const [graph, setGraph] = useState({});
   const [tableRowBgColor,setTableRowBgColor] = useState(TABLE_ROW_BG_COLOR);
   const [activeTableRowId,setActiveTableRowId] = useState(null);
@@ -66,14 +67,40 @@ export default function CanvasState(props) {
     return found;
   }
 
+  const checkEdgeExistence = (edge) => {
+    var found = false;
+    edges.forEach((e) => {
+      if (e === edge) {
+        found = true;
+        return;
+      }
+    })
+    return found;
+  }
+
+
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
 
-    if (checkNodeExistence(source) && checkNodeExistence(target)){
-      
-    } 
+    if (checkNodeExistence(source) && checkNodeExistence(target)) setElements([...elements, newEdge]);
     else toast.error("Node does not exist!");
-    setElements([...elements, newEdge]);
+  }
+  const deleteEdge = (id) => {
+    let found = checkEdgeExistence(id);
+    if (found) {
+      const updatedEdges = edges.filter(edge => edge !== id);
+      setNewEdge(updatedEdges);
+      const updatedElements = elements.filter(element => {
+        if (element.data.id === id) {
+          return false; 
+        }
+        return true;
+      });
+      setElements(updatedElements);
+    } else {
+      toast.error("Edge does not exist");
+    }
+
   }
 
   const addNode = (id) => {
@@ -96,6 +123,30 @@ export default function CanvasState(props) {
     }
   }
 
+  const deleteNode = (id) => {
+    let found = checkNodeExistence(id);
+    if (found) {
+      const updatedNodes = nodes.filter(node => node !== id);
+      setNewNode(updatedNodes);
+      const updatedElements = elements.filter(element => {
+        if (element.data.id === id) {
+          return false; 
+        }
+        if (element.data.source === id || element.data.target === id) {
+          return false; 
+        }
+        return true;
+      });
+      setElements(updatedElements);
+  
+      // Remove the node from the distanceValue object
+      const updatedDistanceValue = { ...distanceArray };
+      delete updatedDistanceValue[id];
+      setDistanceValue(updatedDistanceValue);
+    } else {
+      toast.error("Node does not exist");
+    }
+  };
   const toggleWeighted = () => {
     const newWeighted = !isWeighted;
     setIsWeighted(newWeighted);
@@ -165,7 +216,7 @@ export default function CanvasState(props) {
         }
 
   return (
-    <canvasContext.Provider value={{setActiveTableRowId,setTableRowBgColor,activeTableRowId,tableRowBgColor,setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
+    <canvasContext.Provider value={{deleteEdge,deleteNode,setActiveTableRowId,setTableRowBgColor,activeTableRowId,tableRowBgColor,setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
       {props.children}
     </canvasContext.Provider>
   )
