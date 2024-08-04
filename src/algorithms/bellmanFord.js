@@ -45,6 +45,7 @@ export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, 
   
             if (distances[src] !== Infinity && ((distances[src] + weight) < distances[dest])) {
               console.log("counter: ",counter++);
+
               await animateEdge(cy,src, dest,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
               await animateNode(cy,dest,STATE.VISITED,ANIMATION_TIME_MS);
               await flashTableRowBgColor(dest,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
