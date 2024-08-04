@@ -61,6 +61,8 @@ export default function DropdownButtonEdge() {
 
     const handleSave = ()=>{
         const id = formEdgeId(source,target);
+        console.log("weight in handle save: ",weight );
+        
         try {
           const wt = parseFloat(weight,10);
           addEdge(id, source, target,wt);
