@@ -4,20 +4,21 @@ import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
-import DeleteSureModal from './DeleteSureModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default function NodeMenu({ cy,deleteNode }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [contextMenu, setContextMenu] = useState({ mouseX: null, mouseY: null });
   const [deleteNodeId,setDeleteNodeId] = useState(null);
   const [sureDelete,setSureDelete] = useState(false);
+  const [openModal,setOpenModal] = useState(false);
 
   useEffect(() => {
     
     cy?.on('tap', 'node', (e) => {
       e.preventDefault();
       var node = e.target;
-      console.log(`To remove : `, node.id());
+      // console.log(`To remove : `, node.id());
       setContextMenu({
         mouseX: e.originalEvent.clientX + 100,
         mouseY: e.originalEvent.clientY + 100,
@@ -33,14 +34,28 @@ export default function NodeMenu({ cy,deleteNode }) {
   };
 
   const handleDelete = () => {
-      
-      deleteNode(deleteNodeId);
+      setOpenModal(true);
       handleClose();
+  }
+
+  const onCloseModal = ()=>{
+     setSureDelete(false);
+     setOpenModal(false);
+  }
+
+  const onConfirmModal = ()=>{
+    const newSureDelete = true;
+    setSureDelete(newSureDelete);
+    if(newSureDelete){
+      deleteNode(deleteNodeId);
+      console.log('deleting ',deleteNodeId);
+    }
+    setOpenModal(false);
   }
 
   return (
     <div id="cy-container-menu">
-      <DeleteSureModal sureDelete={sureDelete} setSureDelete={setSureDelete}/>
+      <DeleteConfirmationModal openModal={openModal} onClose={onCloseModal} onConfirm={onConfirmModal}/>
       <Menu
         anchorReference="anchorPosition"
         anchorPosition={
@@ -51,11 +66,11 @@ export default function NodeMenu({ cy,deleteNode }) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem>
+        {/* <MenuItem>
           <IconButton aria-label='Edit' color="primary" size='small' onClick={handleClose}>
                 <EditIcon /> Edit
           </IconButton>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem >
         <IconButton aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
               <DeleteIcon />  Delete

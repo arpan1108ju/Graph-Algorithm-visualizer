@@ -127,6 +127,24 @@ export default function CanvasState(props) {
     if (found) {
       const updatedNodes = nodes.filter(node => node !== id);
       setNewNode(updatedNodes);
+
+
+
+      const updatedEdges = edges.filter(edge => {
+          const [first,second] = edge.split('-');
+
+          if(first === id || second === id){
+            
+                      // console.log('first : ',first);
+                      // console.log("second : ",second);
+              return false;
+          }
+          else return true;
+      })
+
+      setNewEdge(updatedEdges);
+      console.log('updated edges ',updatedEdges);
+
       const updatedElements = elements.filter(element => {
         if (element.data.id === id) {
           return false; 
