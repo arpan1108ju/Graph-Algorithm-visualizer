@@ -15,7 +15,7 @@ export default function CanvasState(props) {
   const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
 
   const [isPending, startTransition] = useTransition();
-  const [nodes, setNewNode] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
+  const [nodes, setNodes] = useState(elements.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
   const [graph, setGraph] = useState({});
   const [tableRowBgColor,setTableRowBgColor] = useState(TABLE_ROW_BG_COLOR);
   const [activeTableRowId,setActiveTableRowId] = useState(null);
@@ -69,14 +69,18 @@ export default function CanvasState(props) {
   const addEdge = (id, source, target, weight) => {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
 
-    if (checkNodeExistence(source) && checkNodeExistence(target)) setElements([...elements, newEdge]);
+    if (checkNodeExistence(source) && checkNodeExistence(target)){
+      
+    } 
     else toast.error("Node does not exist!");
+    setElements([...elements, newEdge]);
   }
 
   const addNode = (id) => {
+    console.log("node id at add node: ",id);
     let found = checkNodeExistence(id);
     if (!found) {
-      setNewNode([...nodes, id]);
+      setNodes([...nodes, id]);
     
       const { x, y } = generateRandomPosition();
       const newNode = { data: { id: id }, position: { x: x, y: y } };
@@ -88,7 +92,7 @@ export default function CanvasState(props) {
       }));
     }
     else{
-      toast.error("Node already exists");
+      toast.error("Node already exists!");
     }
   }
 
@@ -139,7 +143,9 @@ export default function CanvasState(props) {
   const clearGraph = () => {
     setElements([]);
     setDistanceValue({});
-    setNewNode([])
+    setNodes([])
+    setStartNode(null);
+    setNodes([]);
   }
 
   const changeDistance = (id, newDistance) => {   

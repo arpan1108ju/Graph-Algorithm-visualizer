@@ -21,12 +21,12 @@ export default function DropdownButtonEdge() {
     const {addEdge, isWeighted, isDirected} = context;
 
 
-    document.getElementById('menu-edge')?.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && source.length && target.length) {
-         console.log('enter key pressed');
-         handleSave();
-      }
-    });
+    // document.getElementById('menu-edge')?.addEventListener('keydown', (event) => {
+    //   if (event.key === 'Enter' && source.length && target.length) {
+    //      console.log('enter key pressed edge');
+    //      handleSave();
+    //   }
+    // });
 
     const handleClose = () => {
   

@@ -17,12 +17,18 @@ export default function DropdownButtonNode() {
     const {addNode} = context;
 
 
-    document.getElementById('menu-node')?.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' && node.length) {
-         console.log('enter key pressed');
-         handleSave();
-      }
-    });
+    // document.getElementById('menu-node')?.addEventListener('keydown', (event) => {
+    //   if (event.key === 'Backspace') {
+    //     console.log('Backspace key pressed');
+    //     event.preventDefault();
+    //   }
+    //   if (event.key === 'Enter' && node.length) {
+    //      console.log('enter key pressed');
+    //     //  handleSave();
+    //     addNode(node);
+    //     handleClose();
+    //   }
+    // });
 
     const handleClose = () => {
   
