@@ -1,4 +1,4 @@
-import { INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, STATE, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
+import { ANIMATION_TIME_MS_SPEED_HIGH, ANIMATION_TIME_MS_SPEED_LOW, INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, MAX_SPEED, MIN_SPEED, STATE, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
 
 export const colorNode = (cyNode,color) => {
     cyNode.style({ 'background-color': color});
@@ -102,4 +102,17 @@ export const generateRandomPosition = () => {
 
 export function formEdgeId(source,target){
     return source + "-" + target; 
+}
+
+export const getAnimationTime = (speed) => {
+    if(speed < MIN_SPEED || speed > MAX_SPEED){
+        throw new Error("invalid speed");
+    }
+
+    const h = ANIMATION_TIME_MS_SPEED_HIGH;
+    const l = ANIMATION_TIME_MS_SPEED_LOW;
+
+    const time = l + ((h-l)* speed )/(MAX_SPEED - MIN_SPEED);
+
+    return time;
 }

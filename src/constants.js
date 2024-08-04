@@ -10,7 +10,16 @@ export const INITIAL_COLOR_NODE = '#666666';
 export const TABLE_ROW_BG_COLOR = '#FFFFFF';
 export const TABLE_ROW_BG_FLASH_COLOR = '#C8C8C8';
 
-export const ANIMATION_TIME_MS = 500;
+// speed 0 --> 1000 , 
+
+export const ANIMATION_TIME_MS_SPEED_LOW = 1000;
+export const ANIMATION_TIME_MS_SPEED_HIGH = 100;
+export const INITIAL_SPEED = 30;
+export const MIN_SPEED = 0;
+export const MAX_SPEED = 100;
+
+
+export var ANIMATION_TIME_MS = 300;
 
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -37,7 +46,7 @@ export const GRAPH_ALGORITHM = Object.freeze({
 });
 
 export const initialElements = [
-    { data: { id: 'a' }, position: { x: 100, y: 100 } },
+    { data: { id: 'a' }, position: { x: 250, y: 100 } },
     { data: { id: 'b' }, position: { x: 200, y: 200 } },
     { data: { id: 'c' }, position: { x: 300, y: 150 } },
     { data: { id: 'd' }, position: { x: 400, y: 100 } },

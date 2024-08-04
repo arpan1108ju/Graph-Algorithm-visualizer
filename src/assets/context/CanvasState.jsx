@@ -1,7 +1,7 @@
 import React, { useTransition } from 'react'
 import canvasContext from './CanvasContext'
 import { useState } from 'react'
-import { GRAPH_ALGORITHM, initalStylesheet, initialElements, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR } from '../../constants';
+import { ANIMATION_TIME_MS, ANIMATION_TIME_MS_SPEED_HIGH, GRAPH_ALGORITHM, initalStylesheet, initialElements, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR } from '../../constants';
 import { generateRandomPosition } from '../../utils/formatColor';
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,7 @@ export default function CanvasState(props) {
   const [isDirected, setIsDirected] = useState(false);
   const [isWeighted, setIsWeighted] = useState(false);
   const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
-  console.log("elements***: ",elements);
+  // console.log("elements***: ",elements);
   
   const [isPending, startTransition] = useTransition();
   const [nodes, setNewNode] = useState(elements?.filter((e)=> e.data.source === undefined).map((f)=>f.data.id));
@@ -27,6 +27,8 @@ export default function CanvasState(props) {
   }, {}));
 
 
+  const [animationTime,setAnimationTime] = useState(ANIMATION_TIME_MS);
+  const [isRunning,setIsRunning] = useState(false);
   
 
 
@@ -89,7 +91,7 @@ export default function CanvasState(props) {
       
       
       if(checkEdgeExistence(id)){
-        toast.error("Edge allready exists!");
+        toast.error("Edge already exists!");
       }
       else{
         setElements([...elements, newEdge]);
@@ -99,11 +101,31 @@ export default function CanvasState(props) {
     else toast.error("Node does not exist!");
       
   }
+
+  const updateEdge = (id, weight) => {
+    const edgeIndex = elements.findIndex(edge => edge.data.id === id);
+  
+    if (edgeIndex !== -1) {
+      const updatedElements = elements.map((edge, index) => {
+        if (index === edgeIndex) {
+          return { ...edge, data: { ...edge.data, weight: weight } };
+        }
+        return edge;
+      });
+      setElements(updatedElements);
+    } else {
+      toast.error("Edge does not exist!");
+    }
+  };
+  
+
   const deleteEdge = (id) => {
     let found = checkEdgeExistence(id);
     if (found) {
+      // 1. edges array update
       const updatedEdges = edges.filter(edge => edge !== id);
       setNewEdge(updatedEdges);
+      // 2. elements update
       const updatedElements = elements.filter(element => {
         if (element.data.id === id) {
           return false; 
@@ -140,18 +162,16 @@ export default function CanvasState(props) {
   const deleteNode = (id) => {
     let found = checkNodeExistence(id);
     if (found) {
+      //1. nodes array update
       const updatedNodes = nodes.filter(node => node !== id);
       setNewNode(updatedNodes);
 
 
-
+      // 2. edges array update
       const updatedEdges = edges.filter(edge => {
           const [first,second] = edge.split('-');
 
           if(first === id || second === id){
-            
-                      // console.log('first : ',first);
-                      // console.log("second : ",second);
               return false;
           }
           else return true;
@@ -160,6 +180,7 @@ export default function CanvasState(props) {
       setNewEdge(updatedEdges);
       console.log('updated edges ',updatedEdges);
 
+      // 3. elements update
       const updatedElements = elements.filter(element => {
         if (element.data.id === id) {
           return false; 
@@ -248,7 +269,12 @@ export default function CanvasState(props) {
         }
 
   return (
-    <canvasContext.Provider value={{deleteEdge,deleteNode,setActiveTableRowId,setTableRowBgColor,activeTableRowId,tableRowBgColor,setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
+    <canvasContext.Provider value={{
+      setIsRunning,
+      isRunning,
+      setAnimationTime,
+      animationTime,
+      updateEdge,deleteEdge,deleteNode,setActiveTableRowId,setTableRowBgColor,activeTableRowId,tableRowBgColor,setDistanceToInfinity, nodes, distanceArray, changeDistance, clearGraph, isPending, startTransition, startNode, changeStartNode, algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet, toggleDirected, isDirected, isWeighted, elements, addEdge, addNode }}>
       {props.children}
     </canvasContext.Provider>
   )

@@ -1,4 +1,4 @@
-import { ANIMATION_TIME_MS, sleep, STATE } from "../constants";
+import {  sleep, STATE } from "../constants";
 import { animateEdge, animateNode,flashTableRowBgColor } from "../utils/formatColor";
 
 class PriorityQueue {
@@ -24,7 +24,9 @@ class PriorityQueue {
     }
 }
 
-export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor) => {
+export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor
+    ,animationTime
+) => {
     console.log('dijkstra called');
     // Implementation for Dijkstra's algorithm
     changeDistance(startNode, 0);
@@ -45,8 +47,8 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
         const { key: currentNode } = pq.dequeue();
         // console.log("node: ",currentNode," parent: ",parent[currentNode]);
         
-        await animateEdge(cy,parent[currentNode], currentNode,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
-        await animateNode(cy,currentNode,STATE.VISITED,ANIMATION_TIME_MS);
+        await animateEdge(cy,parent[currentNode], currentNode,STATE.VISITED,animationTime,isDirected);
+        await animateNode(cy,currentNode,STATE.VISITED,animationTime);
 
 
         for (const [neighbor, edgeWeight] of graph[currentNode]) {
@@ -55,8 +57,8 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
 
             if (distance < distances[neighbor]) {
                 // console.log('updating dist start : ',neighbor);
-                await flashTableRowBgColor(neighbor,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
-                await sleep(ANIMATION_TIME_MS);
+                await flashTableRowBgColor(neighbor,animationTime,setActiveTableRowId,setTableRowBgColor);
+                await sleep(animationTime);
                 // console.log('updating dist end : ',neighbor);
                 distances[neighbor] = distance;
                 changeDistance(neighbor, distance);

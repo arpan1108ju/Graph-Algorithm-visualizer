@@ -1,8 +1,8 @@
-import { ANIMATION_TIME_MS, sleep, STATE } from "../constants";
+import {  sleep, STATE } from "../constants";
 import {  animateEdge, animateNode, flashTableRowBgColor } from "../utils/formatColor";
 
 export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, changeDistance, nodes,
-  setActiveTableRowId,setTableRowBgColor
+  setActiveTableRowId,setTableRowBgColor,animationTime
 ) => {
     console.log('bellmanFord called');
     // Implementation for Bellman-Ford algorithm
@@ -35,7 +35,7 @@ export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, 
     // console.log('edges; ',edges);
     
 
-    await animateNode(cy,startNode,STATE.VISITED,ANIMATION_TIME_MS);
+    await animateNode(cy,startNode,STATE.VISITED,animationTime);
     // Step 2: Relax all edges |V| - 1 times.
     for (let i = 0; i < nodes.length-1; i++) {
         for(let j = 0; j<edges.length; j++){
@@ -46,10 +46,10 @@ export const bellmanFord = async (cy, graph, startNode, isDirected, isWeighted, 
             if (distances[src] !== Infinity && ((distances[src] + weight) < distances[dest])) {
               console.log("counter: ",counter++);
 
-              await animateEdge(cy,src, dest,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
-              await animateNode(cy,dest,STATE.VISITED,ANIMATION_TIME_MS);
-              await flashTableRowBgColor(dest,ANIMATION_TIME_MS,setActiveTableRowId,setTableRowBgColor);
-              await sleep(ANIMATION_TIME_MS);
+              await animateEdge(cy,src, dest,STATE.VISITED,animationTime,isDirected);
+              await animateNode(cy,dest,STATE.VISITED,animationTime);
+              await flashTableRowBgColor(dest,animationTime,setActiveTableRowId,setTableRowBgColor);
+              await sleep(animationTime);
 
               distances[dest] = distances[src] + weight;
               changeDistance(dest, distances[dest]);

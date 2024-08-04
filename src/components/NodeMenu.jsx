@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-export default function NodeMenu({ cy,deleteNode }) {
+export default function NodeMenu({ cy,deleteNode,disabled }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [contextMenu, setContextMenu] = useState({ mouseX: null, mouseY: null });
   const [deleteNodeId,setDeleteNodeId] = useState(null);
@@ -16,14 +15,15 @@ export default function NodeMenu({ cy,deleteNode }) {
   useEffect(() => {
     
     cy?.on('tap', 'node', (e) => {
+      if(disabled) return;
       e.preventDefault();
       var node = e.target;
-      // console.log(`To remove : `, node.id());
+      console.log(`To remove : `, node.id());
       setContextMenu({
         mouseX: e.originalEvent.clientX + 100,
         mouseY: e.originalEvent.clientY + 100,
       });
-      setAnchorEl(e.originalEvent);
+      if(!disabled) setAnchorEl(e.originalEvent);
       setDeleteNodeId(node.id());
     });
   }, [cy]);
@@ -55,7 +55,9 @@ export default function NodeMenu({ cy,deleteNode }) {
 
   return (
     <div id="cy-container-menu">
-      <DeleteConfirmationModal openModal={openModal} onClose={onCloseModal} onConfirm={onConfirmModal}/>
+      <DeleteConfirmationModal openModal={openModal} onClose={onCloseModal} onConfirm={onConfirmModal}
+        disabled={disabled}
+      />
       <Menu
         anchorReference="anchorPosition"
         anchorPosition={
@@ -63,7 +65,7 @@ export default function NodeMenu({ cy,deleteNode }) {
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
             : undefined
         }
-        open={Boolean(anchorEl)}
+        open={Boolean(anchorEl) && !disabled}
         onClose={handleClose}
       >
         {/* <MenuItem>
@@ -72,7 +74,7 @@ export default function NodeMenu({ cy,deleteNode }) {
           </IconButton>
         </MenuItem> */}
         <MenuItem >
-        <IconButton aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
+        <IconButton disabled={disabled} aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
               <DeleteIcon />  Delete
           </IconButton>
         </MenuItem>

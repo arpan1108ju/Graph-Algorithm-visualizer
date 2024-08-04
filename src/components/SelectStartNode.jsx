@@ -7,7 +7,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
-export default function SelectStartNode() {
+export default function SelectStartNode({disabled}) {
 
     const [node, setNode] = useState("");
 
@@ -49,9 +49,9 @@ export default function SelectStartNode() {
   return (
     <Menu  as="div" id="menu-start-node" className="relative inline-block text-left px-3">
       <div>
-        <MenuButton ref={buttonRef} className=" inline-flex w-40 justify-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-inset ring-gray-300 hover:bg-blue-500">
+        <MenuButton disabled={disabled} ref={buttonRef} className=" items-start inline-flex justify-center gap-x-1.5 rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-lg ring-1 ring-inset ring-gray-300 hover:bg-blue-500">
           <span>Select Start Node</span>
-            <KeyboardArrowDownIcon className='mt-2'/>
+            <KeyboardArrowDownIcon />
         </MenuButton>
       </div>
 

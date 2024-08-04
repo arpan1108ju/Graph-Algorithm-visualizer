@@ -1,27 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
+import EditWeightModal from './EditWeightModal';
+import canvasContext from '../assets/context/CanvasContext';
 
-export default function EdgeMenu({ cy,deleteEdge }) {
+export default function EdgeMenu({ cy,deleteEdge,disabled }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [contextMenu, setContextMenu] = useState({ mouseX: null, mouseY: null });
-  const [deleteEdgeId,setDeleteEdgeId] = useState(null);
+  const [edgeId,setEdgeId] = useState(null);
+  const [sureDelete,setSureDelete] = useState(false);
+  const [openModal,setOpenModal] = useState(false);
+  const [openModalEdit,setOpenModalEdit] = useState(false);
+
+  const [weight,setWeight] = useState("");
+
+  const {updateEdge} = useContext(canvasContext);
 
   useEffect(() => {
     
     cy?.on('tap', 'edge', (e) => {
+      if(disabled) return;
       e.preventDefault();
+
       var edge = e.target;
       console.log(`To remove : `, edge.id());
       setContextMenu({
         mouseX: e.originalEvent.clientX + 100,
         mouseY: e.originalEvent.clientY + 100,
       });
-      setAnchorEl(e.originalEvent);
-      setDeleteEdgeId(edge.id());
+      if(!disabled) setAnchorEl(e.originalEvent);
+      setEdgeId(edge.id());
     });
   }, [cy]);
 
@@ -31,12 +43,55 @@ export default function EdgeMenu({ cy,deleteEdge }) {
   };
 
   const handleDelete = () => {
-      deleteEdge(deleteEdgeId);
+      setOpenModal(true);
       handleClose();
   }
 
+  const handleEditWeight = () => {
+      setOpenModalEdit(true);
+      handleClose();
+  }
+
+  const onCloseModal = ()=>{
+    setSureDelete(false);
+    setOpenModal(false);
+ }
+
+ const onConfirmModal = ()=>{
+  const newSureDelete = true;
+  setSureDelete(newSureDelete);
+  if(newSureDelete){
+    deleteEdge(edgeId);
+    console.log('deleting ',edgeId);
+  }
+  setOpenModal(false);
+}
+
+const onCloseModalEdit = ()=>{
+  setOpenModalEdit(false);
+}
+
+const onConfirmModalEdit = ()=>{
+  console.log('editting ',weight);
+
+  try {
+    const wt = parseFloat(weight,10);
+    updateEdge(edgeId,wt);
+    
+  } catch (error) {
+    toast.error("Please enter correct weight");
+  }
+
+  setOpenModalEdit(false);
+}
+
   return (
     <div id="cy-container-menu">
+      <EditWeightModal openModal={openModalEdit} onClose={onCloseModalEdit} onConfirm={onConfirmModalEdit}
+      setWeight={setWeight} disabled={disabled} />
+      <DeleteConfirmationModal 
+      disabled={disabled}
+      openModal={openModal} onClose={onCloseModal} onConfirm={onConfirmModal}/>
       <Menu
         anchorReference="anchorPosition"
         anchorPosition={
@@ -44,16 +99,16 @@ export default function EdgeMenu({ cy,deleteEdge }) {
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
             : undefined
         }
-        open={Boolean(anchorEl)}
+        open={Boolean(anchorEl) && !disabled}
         onClose={handleClose}
       >
         <MenuItem>
-          <IconButton aria-label='Edit' color="primary" size='small' onClick={handleClose}>
+          <IconButton disabled={disabled} aria-label='Edit' color="primary" size='small' onClick={handleEditWeight}>
                 <EditIcon /> Edit
           </IconButton>
         </MenuItem>
         <MenuItem >
-        <IconButton aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
+        <IconButton disabled={disabled} aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
               <DeleteIcon />  Delete
           </IconButton>
         </MenuItem>

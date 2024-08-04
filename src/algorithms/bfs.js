@@ -1,7 +1,7 @@
-import { ANIMATION_TIME_MS, STATE } from "../constants";
+import { STATE } from "../constants";
 import {  animateEdge, animateNode } from "../utils/formatColor";
 
-export const bfs = async (cy, graph, startNode, isDirected, isWeighted) => {
+export const bfs = async (cy, graph, startNode, isDirected, isWeighted,animationTime) => {
   console.log("bfs called");
   console.log("graph in bfs: ",graph);
   
@@ -13,7 +13,7 @@ export const bfs = async (cy, graph, startNode, isDirected, isWeighted) => {
 
   while (queue.length > 0) {
     let currentNode = queue.shift();
-    await animateNode(cy,currentNode,STATE.VISITED,ANIMATION_TIME_MS);
+    await animateNode(cy,currentNode,STATE.VISITED,animationTime);
 
     let neighbors = graph[currentNode];
     if(!neighbors) continue;
@@ -22,8 +22,8 @@ export const bfs = async (cy, graph, startNode, isDirected, isWeighted) => {
       if (!visited[neighbor]) {
         visited[neighbor] = true;
         queue.push(neighbor);
-        await animateEdge(cy,currentNode,neighbor,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
-        await animateNode(cy,neighbor,STATE.VISITED,ANIMATION_TIME_MS);
+        await animateEdge(cy,currentNode,neighbor,STATE.VISITED,animationTime,isDirected);
+        await animateNode(cy,neighbor,STATE.VISITED,animationTime);
       }
     }
   }

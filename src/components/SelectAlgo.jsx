@@ -51,7 +51,7 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function SelectAlgo() {
+export default function SelectAlgo({disabled}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const context = useContext(canvasContext);
     const { algo,setAlgo } = context;
@@ -90,6 +90,7 @@ export default function SelectAlgo() {
                 disableElevation
                 onClick={handleClick}
                 endIcon={<KeyboardArrowDownIcon />}
+                disabled={disabled}
             >
                 {buttonText}
             </Button>
@@ -119,6 +120,7 @@ export default function SelectAlgo() {
                                             onClick={(e) => handleSelectAlgo(e,GRAPH_ALGORITHM[key])}
                                             className='pl-3 hover:bg-blue-50 hover:rounded-lg mr-4'
                                             checked = {algo === GRAPH_ALGORITHM[key]}
+                                            disabled={disabled}
                                         />
                                     )
                                 }

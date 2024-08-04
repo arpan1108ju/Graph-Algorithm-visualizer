@@ -1,9 +1,11 @@
-import { ANIMATION_TIME_MS, STATE } from "../constants";
+import {  STATE } from "../constants";
 import {  animateEdge, animateNode } from "../utils/formatColor";
 
-export const dfs = async(cy, graph, startNode,isDirected,isWeighted) =>{
+export const dfs = async(cy, graph, startNode,isDirected,isWeighted,animationTime) =>{
     const visited = new Set();
     const stack = [{ node: startNode,parentNode : '#' , weight: 0 }];
+
+    console.log('time is ',animationTime);
 
     while (stack.length > 0) {
       const { node,parentNode, weight } = stack.pop();
@@ -13,8 +15,8 @@ export const dfs = async(cy, graph, startNode,isDirected,isWeighted) =>{
 
         // console.log(`here : node ${node} , parent ${parentNode}`);
         
-        await animateEdge(cy,parentNode,node,STATE.VISITED,ANIMATION_TIME_MS,isDirected);
-        await animateNode(cy,node,STATE.VISITED,ANIMATION_TIME_MS);
+        await animateEdge(cy,parentNode,node,STATE.VISITED,animationTime,isDirected);
+        await animateNode(cy,node,STATE.VISITED,animationTime);
 
         if(!graph[node]) continue;
 
