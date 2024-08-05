@@ -22,6 +22,35 @@ export const MAX_SPEED = 100;
 
 export var ANIMATION_TIME_MS = 300;
 
+export const MIN_NODE_COUNT = 2;
+export const MAX_NODE_COUNT = 10;
+
+export const MIN_EDGE_COUNT = 1;
+
+export const MIN_WEIGHT = 1;
+export const MAX_WEIGHT = 10;
+ 
+
+export const getRandomEdgeExcludingBlacklist = (edgesArrray, blacklistedArray) => {
+  const filteredEdges = edgesArrray.filter(edge => !blacklistedArray.includes(edge.data.id));
+
+  if (filteredEdges.length === 0) {
+    return null;
+  }
+  const randomIndex = Math.floor(Math.random() * filteredEdges.length);
+  return filteredEdges[randomIndex];
+};
+
+
+export const generateRandomIntegerInRangeInclusive = (a, b) => {
+  // Ensure a and b are integers
+  const min = Math.ceil(a);
+  const max = Math.floor(b);
+  
+  // Generate a random integer between min and max (inclusive)
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -29,6 +58,12 @@ export function sleep(ms) {
 export const STATE =  Object.freeze({
     VISITED : 1,
     UNVISITED : 0
+})
+
+export const RUN_STATE =  Object.freeze({
+  STARTED : 2,
+  RUNNING : 1,
+  ENDED : 0,
 })
 
 export const GRAPH_ALGORITHM = Object.freeze({

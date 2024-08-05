@@ -1,9 +1,9 @@
 import { Button } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import canvasContext from '../assets/context/CanvasContext';
 import { dfs } from '../algorithms/dfs';
-import { GRAPH_ALGORITHM } from '../constants';
+import { GRAPH_ALGORITHM, RUN_STATE } from '../constants';
 import { toast } from 'react-toastify';
 import { bfs } from '../algorithms/bfs';
 import { dijkstra } from '../algorithms/dijkstra';
@@ -22,18 +22,17 @@ const Run = ({className,disabled}) => {
     const {animationTime,startNode, cy,createGraph,algo,nodes
       ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor,
       setIsRunning,isRunning, changeDistanceInMatrix, setActiveTableColumnId, nodeMapping, adjacencyMatrix, createAdjacencyMatrixAndSetStartNode
-     } = context;
+      ,setTopoSortedNodeIds ,setRunEnded
+    } = context;
 
     
-   const runAlgo = async(algorithm) => {
-      setIsRunning(true);
-   }
-
-
+    
+    
    const onClick = async() => {
     if(!cy) return;
     
     setIsRunning(true);
+    setRunEnded(RUN_STATE.RUNNING);
     createAdjacencyMatrixAndSetStartNode(
         createGraph(async(updatedGraph) => {
 
@@ -51,7 +50,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.BELLMAN_FORD:
-                    bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance, nodes,
+                    await bellmanFord(cy, updatedGraph, startNode, isDirected, isWeighted, changeDistance, nodes,
                       setActiveTableRowId,setTableRowBgColor,animationTime
                     ).then((value)=>{
                       if(!value) toast.error("Negative cycle present in this graph!");
@@ -75,7 +74,11 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.TOPOLOGICAL_SORT:
-                    await topologicalSort(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await topologicalSort(cy, updatedGraph, startNode, isDirected, isWeighted,animationTime,setTopoSortedNodeIds)
+                    .then((value) => {
+                       if(value == 0) toast.warning('Graph is undirected,Any possible order is topologically sorted.');
+                       if(value == 1) toast.error('Cycle is present, Invalid topological sorting order');
+                    })
                     break;
               
                   case GRAPH_ALGORITHM.TARJAN:
@@ -88,10 +91,10 @@ const Run = ({className,disabled}) => {
                 default:
                     toast.error("Invalid algorithm selected");
             }
-
             setIsRunning(false);
-            
-        }) );
+            setRunEnded(RUN_STATE.ENDED);
+
+          }) );
    };  
 
   return (

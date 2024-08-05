@@ -1,7 +1,7 @@
 
 import React, { useCallback, useContext, useEffect, useRef} from 'react';
 import CytoscapeComponent from 'react-cytoscapejs';
-import { GRAPH_ALGORITHM, layout } from '../constants';
+import { GRAPH_ALGORITHM, layout, RUN_STATE } from '../constants';
 
 import DropdownButtonEdge from './DropdownButtonEdge';
 
@@ -26,6 +26,7 @@ import { Button } from '@mui/material';
 import RandomGraph from './RandomGraph';
 
 import AdjacencyMatrix from './AdjacencyMatrix';
+import TopoSortColumn from './TopoSortColumn';
 
 
 const Graph = () => {
@@ -33,7 +34,7 @@ const Graph = () => {
   const {
     setAnimationTime,isRunning
     ,algo, startNode, cy, setCy, elements, stylesheet, toggleWeighted, toggleDirected, createGraph, graph
-    , isDirected, isWeighted , deleteNode,deleteEdge
+    , isDirected, isWeighted , deleteNode,deleteEdge,runEnded
   } = context;
 
   const showTable = ()=>{
@@ -41,6 +42,7 @@ const Graph = () => {
       return 1;
     }
     else if(algo === GRAPH_ALGORITHM.FLOYD_WARSHALL) return 2;
+    else if(algo === GRAPH_ALGORITHM.TOPOLOGICAL_SORT) return 3;
     return 0;
   }
 
@@ -79,7 +81,7 @@ const Graph = () => {
 
 
   return (
-    <div className=" h-[90.8vh]">
+    <div className="h-screen">
 
        <div className='flex flex-row justify-left items-center bg-amber-400 py-4'>
           <NodeMenu cy={cy} deleteNode={deleteNode} disabled={isRunning}/>
@@ -101,7 +103,7 @@ const Graph = () => {
               <SidebarItem component={<Reset />}/>
             </Sidebar> */}
         {/* </div> */}
-        <div className='w-full' id="cy-container">
+        <div className='w-full   ' id="cy-container">
             <CytoscapeComponent
               elements={elements}
               stylesheet={stylesheet}
@@ -113,23 +115,28 @@ const Graph = () => {
               }}
               cy={onCyReady}
               wheelSensitivity={0.05}
-              
             />
         </div>
         {
           
         (showTable() === 1) &&
-          <aside className='fixed w-44 py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
+          <aside className='absolute w-44 py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
               <DistanceVisualizer />
           </aside>
         }
         {
           (showTable() === 2) &&
-          <aside className='fixed w-auto py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
+          <aside className='absolute w-auto py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
               <AdjacencyMatrix />
           </aside>
         }
-         <aside className='fixed w-44 py-2 mt-2 left-0 hover:cursor-pointer'>
+         {
+          (showTable() === 3) && runEnded === RUN_STATE.ENDED && 
+          <aside className='absolute w-auto py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
+              <TopoSortColumn />
+          </aside>
+        }
+         <aside className=' absolute w-44 py-2 mt-2 left-0 hover:cursor-pointer'>
           <div className='mx-4'>
               <Run disabled={isRunning} />
               <Reset disabled={isRunning}/>
