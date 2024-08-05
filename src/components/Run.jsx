@@ -35,7 +35,6 @@ const Run = ({className,disabled}) => {
     
     setIsRunning(true);
     createAdjacencyMatrixAndSetStartNode(
-
         createGraph(async(updatedGraph) => {
 
             switch(algo) {
@@ -72,7 +71,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.PRIM:
-                    await prim(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await prim(cy, updatedGraph, startNode, isDirected, isWeighted,  nodeMapping, adjacencyMatrix, nodes, animationTime);
                     break;
               
                   case GRAPH_ALGORITHM.TOPOLOGICAL_SORT:
