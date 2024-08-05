@@ -1,4 +1,4 @@
-import { ANIMATION_TIME_MS_SPEED_HIGH, ANIMATION_TIME_MS_SPEED_LOW, INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, MAX_SPEED, MIN_SPEED, STATE, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE, VISITING_COLOR_EDGE, VISITING_COLOR_NODE } from "../constants";
+import { ANIMATION_TIME_MS_SPEED_HIGH, ANIMATION_TIME_MS_SPEED_LOW, INITIAL_COLOR_EDGE, INITIAL_COLOR_NODE, MAX_SPEED, MIN_SPEED, STATE, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR, UNVISITED_COLOR_EDGE, UNVISITED_COLOR_NODE, VISITED_COLOR_EDGE, VISITED_COLOR_NODE } from "../constants";
 
 export const colorNode = (cyNode,color) => {
     cyNode.style({ 'background-color': color});
@@ -19,18 +19,17 @@ export const flashTableRowBgColor = (nodeId,duration,setActiveTableRowId,setTabl
     setTableRowBgColor(TABLE_ROW_BG_FLASH_COLOR);
 
     return new Promise(resolve => {
-    //   setTimeout(() => {
-    //         // console.log('i am inside : ',nodeId);
-    //       setTableRowBgColor(TABLE_ROW_BG_COLOR);
-    //     //   setActiveTableRowId(null);
-    //    },duration);
-    //    resolve();
-    
+      setTimeout(() => {
+            // console.log('i am inside : ',nodeId);
+          setTableRowBgColor(TABLE_ROW_BG_COLOR);
+        //   setActiveTableRowId(null);
+       },duration);
+       resolve();
     })
 
   }
 
-  export const animateNode = (cy,nodeId,state,duration) => {
+export const animateNode = (cy,nodeId,state,duration) => {
 
     const nodeUi = cy.getElementById(nodeId);
 
@@ -117,20 +116,3 @@ export const getAnimationTime = (speed) => {
 
     return time;
 }
-
-
-/*
-
-// var step = 0;
-                // const nodeInterval = setInterval(() => {
-                //     if(step >= color.length){
-                //         clearInterval(nodeInterval);
-                //         return;
-                //     }
-                //     colorNode(nodeUi,color[step]);
-                //     step++; 
-                //     console.log('step is ',step);
-                // },duration);
-                // console.log('resolving ');
-
-*/
