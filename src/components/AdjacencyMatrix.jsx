@@ -15,9 +15,7 @@ const AdjacencyMatrix = () => {
   const context = useContext(canvasContext);
   const {adjacencyMatrix, nodes, tableRowBgColor,activeTableRowId, activeTableColumnId} = context;
 
-  useEffect(() => {
-     console.log('Got ',adjacencyMatrix);
-  })
+
 
   return (
     <TableContainer component={Paper} sx={{ width: 'auto', margin: 'auto' }}>

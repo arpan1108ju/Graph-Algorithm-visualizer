@@ -30,6 +30,8 @@ const Run = ({className,disabled}) => {
     
    const onClick = async() => {
     if(!cy) return;
+
+  
     
     setIsRunning(true);
     setRunEnded(RUN_STATE.RUNNING);
@@ -62,14 +64,10 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.FLOYD_WARSHALL:
-                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime, setActiveTableColumnId, setActiveTableRowId,setTableRowBgColor);
+                    await floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime, setActiveTableColumnId, setActiveTableRowId,setTableRowBgColor);
                     break;
               
-                  case GRAPH_ALGORITHM.KRUSKAL:
-                    await kruskal(cy, updatedGraph, startNode, isDirected, isWeighted);
-                    break;
-              
-                  case GRAPH_ALGORITHM.PRIM:
+                  case GRAPH_ALGORITHM.MST:
                     await prim(cy, updatedGraph, startNode, isDirected, isWeighted,  nodeMapping, adjacencyMatrix, nodes, animationTime);
                     break;
               
@@ -98,7 +96,7 @@ const Run = ({className,disabled}) => {
    };  
 
   return (
-      <Button disabled={disabled} sx={{ width : '120px',margin : '10px 0px 10px 0px' }} onClick={onClick} variant='contained' 
+      <Button disabled={disabled} sx={{ width : '120px',margin : '10px 0px 10px 0px' ,backgroundColor : '#2882d7'}} onClick={onClick} variant='contained' 
       className={`flex flex-row justify-between items-center ${className}`}>
         <PlayArrowRoundedIcon className='h-4 w-4'  />
         <span className='ml-1'>Run</span>

@@ -81,9 +81,9 @@ const Graph = () => {
 
 
   return (
-    <div className="h-screen">
+    <div className="h-screen" >
 
-       <div className='flex flex-row justify-left items-center bg-amber-400 py-4'>
+       <div className='flex flex-row justify-left items-cente py-4' style={{backgroundColor : '#00ff5cb8'}}>
           <NodeMenu cy={cy} deleteNode={deleteNode} disabled={isRunning}/>
           <EdgeMenu cy={cy} deleteEdge={deleteEdge} disabled={isRunning}/>
           <DropdownButtonNode disabled={isRunning} />
@@ -109,9 +109,9 @@ const Graph = () => {
               stylesheet={stylesheet}
               layout={layout}
               style={{
-                width: `100%`,
+                width: '100%',
                 height: '100%',
-                backgroundColor: '#9da1f3ba'
+                background:  'linear-gradient(236deg, rgba(34,6,172,0.891281512605042) 0%, rgba(240,99,255,1) 71%, rgba(244,6,6,1) 100%)',
               }}
               cy={onCyReady}
               wheelSensitivity={0.05}

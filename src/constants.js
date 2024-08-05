@@ -1,12 +1,12 @@
-export const VISITED_COLOR_EDGE = '#f12000';
-export const UNVISITED_COLOR_EDGE = '#666666';
-export const INITIAL_COLOR_EDGE = '#666666';
-export const VISITING_COLOR_EDGE = "#5ce65c";
+export const VISITED_COLOR_EDGE = '#e9ff00';
+export const UNVISITED_COLOR_EDGE = '#8ec639';
+export const INITIAL_COLOR_EDGE = '#8ec639';
 
-export const VISITED_COLOR_NODE = '#f12000';
-export const UNVISITED_COLOR_NODE = '#666666';
-export const INITIAL_COLOR_NODE = '#666666';
-export const VISITING_COLOR_NODE = "#5ce65c";
+
+export const VISITED_COLOR_NODE = '#00ff53';
+export const UNVISITED_COLOR_NODE = '#2f753d';
+export const INITIAL_COLOR_NODE = '#2f753d';
+
 
 export const TABLE_ROW_BG_COLOR = '#FFFFFF';
 export const TABLE_ROW_BG_FLASH_COLOR = '#C8C8C8';
@@ -74,8 +74,9 @@ export const GRAPH_ALGORITHM = Object.freeze({
   BELLMAN_FORD: "BELLMAN FORD",
   A_STAR: "A STAR",
   FLOYD_WARSHALL: "FLOYD WARSHALL",
-  KRUSKAL: "KRUSKAL",
-  PRIM: "PRIM",
+  // KRUSKAL: "KRUSKAL",
+  // PRIM: "PRIM",
+  MST : "MINIMUM SPANNIG TREE",
   TOPOLOGICAL_SORT: "TOPOLOGICAL SORT",
   TARJAN: "TARJAN",
   KOSARAJU: "KOSARAJU"
@@ -103,7 +104,7 @@ export const initalStylesheet = [
       'label': 'data(id)',
       'text-valign': 'center',
       'color': '#fff',
-      'font-size': '10px',
+      'font-size': '15px',
       'width': 25,
       'height': 25
     }
@@ -112,6 +113,11 @@ export const initalStylesheet = [
     selector: 'edge',
     style: {
       'label' : 'data(weight)',
+      'color' : '#fff',
+      'text-margin-x': '10px',           // Horizontal offset from the edge
+      'text-margin-y': '10px',           // Vertical offset from the edge
+      // 'text-rotation': 'autorotate',
+     
       'width': 3,
       'line-color': INITIAL_COLOR_EDGE,
       'target-arrow-color': INITIAL_COLOR_EDGE,

@@ -27,7 +27,7 @@ class PriorityQueue {
 export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor
     ,animationTime
 ) => {
-    console.log('dijkstra called');
+    // console.log('dijkstra called');
     // Implementation for Dijkstra's algorithm
     changeDistance(startNode, 0);
     const distances = {};
