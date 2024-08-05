@@ -21,7 +21,7 @@ export default function NodeMenu({ cy,deleteNode,disabled }) {
       console.log(`To remove : `, node.id());
       setContextMenu({
         mouseX: e.originalEvent.clientX + 100,
-        mouseY: e.originalEvent.clientY + 100,
+        mouseY: e.originalEvent.clientY - 50,
       });
       if(!disabled) setAnchorEl(e.originalEvent);
       setDeleteNodeId(node.id());
@@ -68,11 +68,11 @@ export default function NodeMenu({ cy,deleteNode,disabled }) {
         open={Boolean(anchorEl) && !disabled}
         onClose={handleClose}
       >
-        {/* <MenuItem>
-          <IconButton aria-label='Edit' color="primary" size='small' onClick={handleClose}>
-                <EditIcon /> Edit
-          </IconButton>
-        </MenuItem> */}
+        <MenuItem>
+          <span className='text-lg font-medium m-auto text-cyan-500'>
+            Value : {deleteNodeId} 
+          </span>
+        </MenuItem>
         <MenuItem >
         <IconButton disabled={disabled} aria-label='Delete' color="warning" size='small' onClick={handleDelete}>
               <DeleteIcon />  Delete
