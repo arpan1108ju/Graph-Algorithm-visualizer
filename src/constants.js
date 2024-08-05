@@ -1,11 +1,12 @@
 export const VISITED_COLOR_EDGE = '#f12000';
 export const UNVISITED_COLOR_EDGE = '#666666';
 export const INITIAL_COLOR_EDGE = '#666666';
-
+export const VISITING_COLOR_EDGE = "#5ce65c";
 
 export const VISITED_COLOR_NODE = '#f12000';
 export const UNVISITED_COLOR_NODE = '#666666';
 export const INITIAL_COLOR_NODE = '#666666';
+export const VISITING_COLOR_NODE = "#5ce65c";
 
 export const TABLE_ROW_BG_COLOR = '#FFFFFF';
 export const TABLE_ROW_BG_FLASH_COLOR = '#C8C8C8';

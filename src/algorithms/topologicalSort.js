@@ -5,6 +5,6 @@ import {  animateEdge, animateNode } from "../utils/formatColor";
 
 export const topologicalSort = async (cy, graph, startNode, isDirected, isWeighted) => {
     console.log('topologicalSort');
-    // Implementation for Topological Sort
+    
   };
   

@@ -30,7 +30,7 @@ export default function EdgeMenu({ cy,deleteEdge,disabled }) {
       console.log(`To remove : `, edge.id());
       setContextMenu({
         mouseX: e.originalEvent.clientX + 100,
-        mouseY: e.originalEvent.clientY + 100,
+        mouseY: e.originalEvent.clientY - 50,
       });
       if(!disabled) setAnchorEl(e.originalEvent);
       setEdgeId(edge.id());
@@ -102,6 +102,11 @@ const onConfirmModalEdit = ()=>{
         open={Boolean(anchorEl) && !disabled}
         onClose={handleClose}
       >
+        <MenuItem>
+          <span className='text-lg font-medium m-auto text-cyan-500'>
+            Value : {edgeId} 
+          </span>
+        </MenuItem>
         <MenuItem>
           <IconButton disabled={disabled} aria-label='Edit' color="primary" size='small' onClick={handleEditWeight}>
                 <EditIcon /> Edit

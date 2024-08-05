@@ -27,7 +27,6 @@ const Run = ({className,disabled}) => {
     
    const runAlgo = async(algorithm) => {
       setIsRunning(true);
-
    }
 
 
@@ -61,7 +60,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.A_STAR:
-                    aStar(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await aStar(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
               
                   case GRAPH_ALGORITHM.FLOYD_WARSHALL:
@@ -69,23 +68,23 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.KRUSKAL:
-                    kruskal(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await kruskal(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
               
                   case GRAPH_ALGORITHM.PRIM:
-                    prim(cy, updatedGraph, startNode, isDirected, isWeighted, nodeMapping, adjacencyMatrix, nodes, animationTime);
+                    await prim(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
               
                   case GRAPH_ALGORITHM.TOPOLOGICAL_SORT:
-                    topologicalSort(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await topologicalSort(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
               
                   case GRAPH_ALGORITHM.TARJAN:
-                    tarjan(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await tarjan(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
               
                   case GRAPH_ALGORITHM.KOSARAJU:
-                    kosaraju(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    await kosaraju(cy, updatedGraph, startNode, isDirected, isWeighted);
                     break;
                 default:
                     toast.error("Invalid algorithm selected");
