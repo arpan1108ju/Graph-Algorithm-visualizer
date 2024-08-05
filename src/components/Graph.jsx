@@ -25,6 +25,8 @@ import AnimationSlider from './animation-slider';
 import { Button } from '@mui/material';
 import RandomGraph from './RandomGraph';
 
+import AdjacencyMatrix from './AdjacencyMatrix';
+
 
 const Graph = () => {
   const context = useContext(canvasContext);
@@ -35,7 +37,11 @@ const Graph = () => {
   } = context;
 
   const showTable = ()=>{
-    return (algo === GRAPH_ALGORITHM.DIJKSTRA || algo === GRAPH_ALGORITHM.FLOYD_WARSHALL || algo === GRAPH_ALGORITHM.BELLMAN_FORD);
+    if(algo === GRAPH_ALGORITHM.DIJKSTRA || algo === GRAPH_ALGORITHM.BELLMAN_FORD){
+      return 1;
+    }
+    else if(algo === GRAPH_ALGORITHM.FLOYD_WARSHALL) return 2;
+    return 0;
   }
 
   const onCyReady = useCallback((cyGot) => {
@@ -73,7 +79,7 @@ const Graph = () => {
 
 
   return (
-    <div className="h-screen ">
+    <div className=" h-[90.8vh]">
 
        <div className='flex flex-row justify-left items-center bg-amber-400 py-4'>
           <NodeMenu cy={cy} deleteNode={deleteNode} disabled={isRunning}/>
@@ -88,13 +94,13 @@ const Graph = () => {
       </div>
     
       <div className="canvasComponent flex flex-row h-full w-full">
-        <div className='fixed w-44 py-2 px-2 mt-2 left-1'>
+        {/* <div className='fixed w-44 py-2 px-2 mt-2 left-1'> */}
             {/* <Sidebar>
               <SidebarItem component={<Run />}/>
               <SidebarItem component={<ClearGraph />}/>
               <SidebarItem component={<Reset />}/>
             </Sidebar> */}
-        </div>
+        {/* </div> */}
         <div className='w-full' id="cy-container">
             <CytoscapeComponent
               elements={elements}
@@ -110,9 +116,17 @@ const Graph = () => {
               
             />
         </div>
-        {showTable() &&
+        {
+          
+        (showTable() === 1) &&
           <aside className='fixed w-44 py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
               <DistanceVisualizer />
+          </aside>
+        }
+        {
+          (showTable() === 2) &&
+          <aside className='fixed w-auto py-2 px-2 mt-2 right-1 hover:cursor-pointer'>
+              <AdjacencyMatrix />
           </aside>
         }
          <aside className='fixed w-44 py-2 mt-2 left-0 hover:cursor-pointer'>

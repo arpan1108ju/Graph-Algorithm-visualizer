@@ -9,9 +9,9 @@ export default function AnimationSlider({setAnimationTime,disabled}) {
   const [value, setValue] = React.useState(INITIAL_SPEED);
 
   const handleChange = (event, newValue) => {
-    console.log('check ',newValue);
+    // console.log('check ',newValue);
     setValue(newValue);
-    const time = getAnimationTime(value);
+    const time = getAnimationTime(newValue);
     setAnimationTime(time);
   };
 

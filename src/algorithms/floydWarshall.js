@@ -1,7 +1,7 @@
 import {  STATE } from "../constants";
 import {  animateEdge, animateNode } from "../utils/formatColor";
 
-export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted, nodes, changeDistance,animationTime) => {
+export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime) => {
     console.log('floydWarshall called');
     // Implementation for Floyd-Warshall algorithm
     console.log("graph begin: ",graph);
@@ -52,6 +52,7 @@ export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted
             for (let j = 0; j < V; j++) {
                 if ((dist[i][k] !== Infinity && dist[k][j] != Infinity)&& dist[i][k] + dist[k][j] < dist[i][j]) {
                     dist[i][j] = dist[i][k] + dist[k][j];
+                    changeDistanceInMatrix(i,j,dist[i][j]);
                 }
             }
         }

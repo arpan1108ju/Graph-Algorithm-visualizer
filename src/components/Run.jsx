@@ -21,7 +21,7 @@ const Run = ({className,disabled}) => {
     const context = useContext(canvasContext);
     const {animationTime,startNode, cy,createGraph,algo,nodes
       ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor,
-      setIsRunning,isRunning
+      setIsRunning,isRunning, changeDistanceInMatrix
      } = context;
 
     
@@ -64,7 +64,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.FLOYD_WARSHALL:
-                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistance,animationTime);
+                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime);
                     break;
               
                   case GRAPH_ALGORITHM.KRUSKAL:

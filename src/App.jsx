@@ -10,7 +10,7 @@ function App() {
         <h1 className="text-2xl font-bold text-center my-4">
           GRAPH ALOGRITHM VISUALIZER
         </h1>
-        <div className="mx-auto">
+        <div className="mx-auto overflow-y-hidden">
           <Graph />
         </div>
       </div>

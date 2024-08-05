@@ -10,8 +10,8 @@ export default function CanvasState(props) {
   const [stylesheet, setStylesheet] = useState(initalStylesheet);
   const [algo, setAlgo] = useState(GRAPH_ALGORITHM.DEFAULT);
   const [elements, setElements] = useState(initialElements);
-  const [isDirected, setIsDirected] = useState(false);
-  const [isWeighted, setIsWeighted] = useState(false);
+  const [isDirected, setIsDirected] = useState(true);
+  const [isWeighted, setIsWeighted] = useState(true);
   const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
   // console.log("elements***: ",elements);
 
@@ -30,7 +30,45 @@ export default function CanvasState(props) {
   const [animationTime, setAnimationTime] = useState(ANIMATION_TIME_MS);
   const [isRunning, setIsRunning] = useState(false);
 
+  const nodeMapping = {};
 
+  const computeAdjacencyMatrix = ()=>{
+    nodes.forEach((node, index) => {
+      nodeMapping[node] = index;
+      });
+
+    const matrix = [];
+    let n = nodes.length;
+    for(let i = 0; i < n; i++){
+      matrix[i] = [];
+      for(let j = 0; j<n ; j++){
+        if(i == j){
+          matrix[i][j] = 0;
+          continue;
+        }
+        matrix[i][j] = Infinity;
+      }
+    }
+
+    elements.forEach((e)=>{
+      if(e.data.source !== undefined){
+        const source =  e.data.source;
+        const target = e.data.target;
+        const u = nodeMapping[source];
+        const v = nodeMapping[target];
+
+        matrix[u][v] = e.data.weight;
+      }
+    })
+
+    console.log('adjacency matrix: ',matrix);
+    
+    return matrix;
+  }
+
+  const [adjacencyMatrix, setAdjacencyMatrix] = useState(
+    computeAdjacencyMatrix()
+  )
 
 
   const createGraph = (callback) => {
@@ -269,6 +307,14 @@ export default function CanvasState(props) {
     }))
   }
 
+  const changeDistanceInMatrix = (u, v, wt)=>{
+    setAdjacencyMatrix(prevMatrix => {
+      const newMatrix = prevMatrix.map(row => row.slice());
+      newMatrix[u][v] = wt;
+      return newMatrix;
+    });
+  }
+
   return (
     <canvasContext.Provider value={{
       setIsRunning,
@@ -281,7 +327,8 @@ export default function CanvasState(props) {
       setDistanceToInfinity, nodes, distanceArray, changeDistance,
       clearGraph, isPending, startTransition, startNode, changeStartNode,
       algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet,
-      toggleDirected, isDirected, isWeighted, elements, addEdge, addNode
+      toggleDirected, isDirected, isWeighted, elements, addEdge, addNode, 
+      adjacencyMatrix ,changeDistanceInMatrix, nodeMapping
     }}>
       {props.children}
     </canvasContext.Provider>
