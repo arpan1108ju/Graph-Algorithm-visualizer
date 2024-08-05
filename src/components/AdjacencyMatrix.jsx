@@ -13,7 +13,7 @@ const AdjacencyMatrix = () => {
   ];
 
   const context = useContext(canvasContext);
-  const {adjacencyMatrix, nodeMapping, nodes} = context;
+  const {adjacencyMatrix, nodes, tableRowBgColor,activeTableRowId, activeTableColumnId} = context;
 
   return (
     <TableContainer component={Paper} sx={{ width: 'auto', margin: 'auto' }}>
@@ -31,7 +31,7 @@ const AdjacencyMatrix = () => {
             <TableRow key={rowIndex}>
               <TableCell align="center">{nodes[rowIndex]}</TableCell>
               {row.map((cell, cellIndex) => (
-                <TableCell key={cellIndex} align="center">{cell=== Infinity?'∞':cell}</TableCell>
+                <TableCell key={cellIndex}  align="center" sx={ activeTableRowId === rowIndex&& activeTableColumnId === cellIndex  ? { backgroundColor : tableRowBgColor } : {}}>{cell=== Infinity?'∞':cell}</TableCell>
               ))}
             </TableRow>
           ))}

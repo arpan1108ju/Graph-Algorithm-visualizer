@@ -1,13 +1,14 @@
-import {  STATE } from "../constants";
-import {  animateEdge, animateNode } from "../utils/formatColor";
+import {  sleep } from "../constants";
+import { flashTableRowBgColor } from "../utils/formatColor";
 
-export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime) => {
+
+export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime, setActiveTableColumnId, setActiveTableRowId,setTableRowBgColor) => {
     console.log('floydWarshall called');
     // Implementation for Floyd-Warshall algorithm
-    console.log("graph begin: ",graph);
+    // console.log("graph begin: ",graph);
     
     const V = Object.keys(graph).length;
-    console.log("V: ",V);
+    // console.log("V: ",V);
     
     // Initialize the distance matrix with the graph's adjacency matrix
     const dist = [];
@@ -20,15 +21,15 @@ export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted
         }
     }
 
-    console.log("dist: ",dist);
-    console.log("nodes: ",nodes);
+    // console.log("dist: ",dist);
+    // console.log("nodes: ",nodes);
     
 
     const nodeMapping = {};
     nodes.forEach((node, index) => {
       nodeMapping[node] = index;
       });
-    console.log("node mapping : ",nodeMapping);
+    // console.log("node mapping : ",nodeMapping);
     
 
     for(let i = 0; i<nodes.length; i++){
@@ -52,13 +53,16 @@ export const floydWarshall = async (cy, graph, startNode, isDirected, isWeighted
             for (let j = 0; j < V; j++) {
                 if ((dist[i][k] !== Infinity && dist[k][j] != Infinity)&& dist[i][k] + dist[k][j] < dist[i][j]) {
                     dist[i][j] = dist[i][k] + dist[k][j];
+                    await flashTableRowBgColor(i,animationTime,setActiveTableRowId,setTableRowBgColor);
+                    await sleep(animationTime);
+                    setActiveTableColumnId(j);
                     changeDistanceInMatrix(i,j,dist[i][j]);
                 }
             }
         }
     }
 
-    console.log("distance for floyd warshal: ",dist);
+    // console.log("distance for floyd warshal: ",dist);
     
   };
   

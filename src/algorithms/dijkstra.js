@@ -68,6 +68,6 @@ export const dijkstra = async (cy, graph, startNode, isDirected, isWeighted, cha
         }
     }
 
-    console.log("distance array: ",distances);
+    // console.log("distance array: ",distances);
     return true;
 };

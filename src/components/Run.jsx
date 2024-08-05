@@ -21,7 +21,7 @@ const Run = ({className,disabled}) => {
     const context = useContext(canvasContext);
     const {animationTime,startNode, cy,createGraph,algo,nodes
       ,isDirected,isWeighted, changeDistance,setActiveTableRowId,setTableRowBgColor,
-      setIsRunning,isRunning, changeDistanceInMatrix
+      setIsRunning,isRunning, changeDistanceInMatrix, setActiveTableColumnId, nodeMapping, adjacencyMatrix, createAdjacencyMatrixAndSetStartNode
      } = context;
 
     
@@ -33,8 +33,9 @@ const Run = ({className,disabled}) => {
 
    const onClick = async() => {
     if(!cy) return;
-
+    
     setIsRunning(true);
+    await createAdjacencyMatrixAndSetStartNode(
 
         createGraph(async(updatedGraph) => {
 
@@ -64,7 +65,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.FLOYD_WARSHALL:
-                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime);
+                    floydWarshall(cy, updatedGraph, startNode, isDirected, isWeighted, nodes, changeDistanceInMatrix,animationTime, setActiveTableColumnId, setActiveTableRowId,setTableRowBgColor);
                     break;
               
                   case GRAPH_ALGORITHM.KRUSKAL:
@@ -72,7 +73,7 @@ const Run = ({className,disabled}) => {
                     break;
               
                   case GRAPH_ALGORITHM.PRIM:
-                    prim(cy, updatedGraph, startNode, isDirected, isWeighted);
+                    prim(cy, updatedGraph, startNode, isDirected, isWeighted, nodeMapping, adjacencyMatrix, nodes, animationTime);
                     break;
               
                   case GRAPH_ALGORITHM.TOPOLOGICAL_SORT:
@@ -92,7 +93,7 @@ const Run = ({className,disabled}) => {
 
             setIsRunning(false);
             
-        })
+        }) );
    };  
 
   return (

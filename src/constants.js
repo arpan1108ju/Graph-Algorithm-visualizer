@@ -75,11 +75,11 @@ export const initalStylesheet = [
   {
     selector: 'edge',
     style: {
-      'label' : '',
+      'label' : 'data(weight)',
       'width': 3,
       'line-color': INITIAL_COLOR_EDGE,
       'target-arrow-color': INITIAL_COLOR_EDGE,
-      'target-arrow-shape': '',
+      'target-arrow-shape': 'triangle',
       'curve-style': 'unbundled-bezier',
       'control-point-distances': 50, // Control distances can be adjusted dynamically
       'control-point-weights': 0.5,

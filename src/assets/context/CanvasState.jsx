@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ANIMATION_TIME_MS, ANIMATION_TIME_MS_SPEED_HIGH, GRAPH_ALGORITHM, initalStylesheet, initialElements, TABLE_ROW_BG_COLOR, TABLE_ROW_BG_FLASH_COLOR } from '../../constants';
 import { generateRandomPosition } from '../../utils/formatColor';
 import { toast } from 'react-toastify';
+import { FaArrowUpFromGroundWater } from 'react-icons/fa6';
 
 export default function CanvasState(props) {
   const [cy, setCy] = useState(null);
@@ -12,15 +13,16 @@ export default function CanvasState(props) {
   const [elements, setElements] = useState(initialElements);
   const [isDirected, setIsDirected] = useState(true);
   const [isWeighted, setIsWeighted] = useState(true);
-  const [startNode, setStartNode] = useState(elements.length > 0 ? elements[0].data.id : '');
+  const [nodes, setNewNode] = useState(elements?.filter((e) => e.data.source === undefined).map((f) => f.data.id));
+  const [startNode, setStartNode] = useState(nodes.length > 0 ? nodes[0] : null);
   // console.log("elements***: ",elements);
 
   const [isPending, startTransition] = useTransition();
-  const [nodes, setNewNode] = useState(elements?.filter((e) => e.data.source === undefined).map((f) => f.data.id));
   const [edges, setNewEdge] = useState(elements?.filter((e) => e.data.source !== undefined).map((f) => f.data.id));
   const [graph, setGraph] = useState({});
   const [tableRowBgColor, setTableRowBgColor] = useState(TABLE_ROW_BG_COLOR);
   const [activeTableRowId, setActiveTableRowId] = useState(null);
+  const [activeTableColumnId, setActiveTableColumnId] = useState(null);
   const [distanceArray, setDistanceValue] = useState(nodes.reduce((acc, node) => {
     acc[node] = Infinity;
     return acc;
@@ -32,17 +34,17 @@ export default function CanvasState(props) {
 
   const nodeMapping = {};
 
-  const computeAdjacencyMatrix = ()=>{
+  const computeAdjacencyMatrix = () => {
     nodes.forEach((node, index) => {
       nodeMapping[node] = index;
-      });
+    });
 
     const matrix = [];
     let n = nodes.length;
-    for(let i = 0; i < n; i++){
+    for (let i = 0; i < n; i++) {
       matrix[i] = [];
-      for(let j = 0; j<n ; j++){
-        if(i == j){
+      for (let j = 0; j < n; j++) {
+        if (i == j) {
           matrix[i][j] = 0;
           continue;
         }
@@ -50,19 +52,22 @@ export default function CanvasState(props) {
       }
     }
 
-    elements.forEach((e)=>{
-      if(e.data.source !== undefined){
-        const source =  e.data.source;
+    elements.forEach((e) => {
+      if (e.data.source !== undefined) {
+        const source = e.data.source;
         const target = e.data.target;
         const u = nodeMapping[source];
         const v = nodeMapping[target];
 
         matrix[u][v] = e.data.weight;
+        if (!isDirected) { // For Undirected graph. 
+          matrix[v][u] = e.data.weight;
+        }
       }
     })
 
-    console.log('adjacency matrix: ',matrix);
-    
+    // console.log('adjacency matrix: ',matrix);
+
     return matrix;
   }
 
@@ -70,6 +75,13 @@ export default function CanvasState(props) {
     computeAdjacencyMatrix()
   )
 
+  const createAdjacencyMatrixAndSetStartNode = (callback)=>{
+    setAdjacencyMatrix(computeAdjacencyMatrix());
+    setStartNode(startNode === null ? nodes[0] : startNode);
+    if(callback){
+      callback();
+    }
+  }
 
   const createGraph = (callback) => {
     var graphObj = {};
@@ -87,13 +99,13 @@ export default function CanvasState(props) {
       }
       return element;
     })
-
     // console.log('local ',graphObj);
     setGraph((g) => graphObj);
 
     if (callback) {
       callback(graphObj);
     }
+
 
   }
 
@@ -124,8 +136,8 @@ export default function CanvasState(props) {
     const newEdge = { data: { id: id, source: source, target: target, weight: weight } };
 
     if (checkNodeExistence(source) && checkNodeExistence(target)) {
-      console.log("edges**: ", edges);
-      console.log("id**:  ", id);
+      // console.log("edges**: ", edges);
+      // console.log("id**:  ", id);
 
 
       if (checkEdgeExistence(id)) {
@@ -154,6 +166,12 @@ export default function CanvasState(props) {
     } else {
       toast.error("Edge does not exist!");
     }
+
+    const [src, dest] = id.split('-');
+    const srcInd = nodeMapping[src];
+    const destInd = nodeMapping[dest];
+
+    changeDistanceInMatrix(srcInd, destInd, weight);
   };
 
 
@@ -216,7 +234,7 @@ export default function CanvasState(props) {
       })
 
       setNewEdge(updatedEdges);
-      console.log('updated edges ', updatedEdges);
+      // console.log('updated edges ', updatedEdges);
 
       // 3. elements update
       const updatedElements = elements.filter(element => {
@@ -288,6 +306,7 @@ export default function CanvasState(props) {
     setNewNode([])
     setStartNode(null);
     setNewEdge([]);
+    setAdjacencyMatrix([]);
   }
 
   const changeDistance = (id, newDistance) => {
@@ -305,9 +324,10 @@ export default function CanvasState(props) {
         return acc;
       }, {})
     }))
+    setAdjacencyMatrix(computeAdjacencyMatrix());
   }
 
-  const changeDistanceInMatrix = (u, v, wt)=>{
+  const changeDistanceInMatrix = (u, v, wt) => {
     setAdjacencyMatrix(prevMatrix => {
       const newMatrix = prevMatrix.map(row => row.slice());
       newMatrix[u][v] = wt;
@@ -322,13 +342,13 @@ export default function CanvasState(props) {
       setAnimationTime,
       animationTime,
       updateEdge, deleteEdge,
-      deleteNode, setActiveTableRowId,
-      setTableRowBgColor, activeTableRowId, tableRowBgColor,
+      deleteNode, setActiveTableRowId, setActiveTableColumnId,
+      setTableRowBgColor, activeTableRowId, activeTableColumnId, tableRowBgColor,
       setDistanceToInfinity, nodes, distanceArray, changeDistance,
       clearGraph, isPending, startTransition, startNode, changeStartNode,
       algo, setAlgo, createGraph, graph, cy, setCy, toggleWeighted, stylesheet,
-      toggleDirected, isDirected, isWeighted, elements, addEdge, addNode, 
-      adjacencyMatrix ,changeDistanceInMatrix, nodeMapping
+      toggleDirected, isDirected, isWeighted, elements, addEdge, addNode,
+      adjacencyMatrix, changeDistanceInMatrix, nodeMapping, createAdjacencyMatrixAndSetStartNode
     }}>
       {props.children}
     </canvasContext.Provider>

@@ -15,7 +15,7 @@ const EditWeightModal = ({ openModal, onClose, onConfirm,setWeight,disabled }) =
       <div className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${openModal ? 'opacity-100' : 'opacity-0'} z-10`} />
       <div className={`relative z-20 p-4 bg-white shadow-lg rounded-lg transition-transform duration-300 transform ${openModal ? 'translate-y-0' : '-translate-y-10'}`}>
         <DialogContent>
-        <TextField id="outlined-basic" label="Weight" variant="outlined"
+        <TextField id="outlined-basic" label="New Weight" variant="outlined"
          onChange={(e) => setWeight(e.target.value)} />
         </DialogContent>
         <DialogActions >
