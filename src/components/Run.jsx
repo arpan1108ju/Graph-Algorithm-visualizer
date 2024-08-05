@@ -34,7 +34,7 @@ const Run = ({className,disabled}) => {
     if(!cy) return;
     
     setIsRunning(true);
-    await createAdjacencyMatrixAndSetStartNode(
+    createAdjacencyMatrixAndSetStartNode(
 
         createGraph(async(updatedGraph) => {
 
