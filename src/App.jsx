@@ -7,7 +7,9 @@ function App() {
   return (
     <CanvasState>
       <div className="App">
-        <h1 className="text-2xl font-bold text-center my-4">GRAPH ALOGRITHM VISUALIZER</h1>
+        <h1 className="text-2xl font-bold text-center my-4">
+          GRAPH ALOGRITHM VISUALIZER
+        </h1>
         <div className="mx-auto">
           <Graph />
         </div>
